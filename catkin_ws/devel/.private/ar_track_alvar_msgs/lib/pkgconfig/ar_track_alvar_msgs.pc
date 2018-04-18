@@ -1,8 +1,0 @@
-prefix=/home/parallels/catkin_ws/devel/.private/ar_track_alvar_msgs
-
-Name: ar_track_alvar_msgs
-Description: Description of ar_track_alvar_msgs
-Version: 0.7.0
-Cflags: -I/home/parallels/catkin_ws/devel/.private/ar_track_alvar_msgs/include
-Libs: -L/home/parallels/catkin_ws/devel/.private/ar_track_alvar_msgs/lib 
-Requires: message_runtime std_msgs geometry_msgs

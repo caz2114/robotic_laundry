@@ -1,1 +1,0 @@
-/home/parallels/catkin_ws/devel/.private/rethink_ee_description/lib/pkgconfig/rethink_ee_description.pc

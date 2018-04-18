@@ -1,1 +1,0 @@
-/home/parallels/catkin_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_control/__init__.py

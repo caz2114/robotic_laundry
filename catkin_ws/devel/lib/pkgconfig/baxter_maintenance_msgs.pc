@@ -1,1 +1,0 @@
-/home/parallels/catkin_ws/devel/.private/baxter_maintenance_msgs/lib/pkgconfig/baxter_maintenance_msgs.pc

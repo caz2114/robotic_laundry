@@ -1,1 +1,0 @@
-/home/parallels/catkin_ws/devel/.private/ar_track_alvar_msgs/share/roseus/ros/ar_track_alvar_msgs/msg/AlvarMarkers.l

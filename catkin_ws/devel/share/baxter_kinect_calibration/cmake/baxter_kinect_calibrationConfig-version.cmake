@@ -1,1 +1,0 @@
-/home/parallels/catkin_ws/devel/.private/baxter_kinect_calibration/share/baxter_kinect_calibration/cmake/baxter_kinect_calibrationConfig-version.cmake
