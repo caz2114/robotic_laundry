@@ -1,0 +1,13 @@
+[01m[K/home/parallels/catkin_ws/src/baxter_kinect_calibration/src/calibrate_kinect_alvar_bundle.cpp:[m[K In function ‘[01m[Kint PlaneFitPoseImprovement(int, const ARCloud&, pcl::PointCloud<pcl::PointXYZRGB>::Ptr, const ARCloud&, alvar::Pose&)[m[K’:
+[01m[K/home/parallels/catkin_ws/src/baxter_kinect_calibration/src/calibrate_kinect_alvar_bundle.cpp:132:58:[m[K [01;35m[Kwarning: [m[Kextended initializer lists only available with -std=c++11 or -std=gnu++11
+   int *xPoints = getTwoValidPoints(corners_3D, new int[2]{0,3}, new int[2]{1,2});
+[01;32m[K                                                          ^[m[K
+[01m[K/home/parallels/catkin_ws/src/baxter_kinect_calibration/src/calibrate_kinect_alvar_bundle.cpp:132:75:[m[K [01;35m[Kwarning: [m[Kextended initializer lists only available with -std=c++11 or -std=gnu++11
+   int *xPoints = getTwoValidPoints(corners_3D, new int[2]{0,3}, new int[2]{1,2});
+[01;32m[K                                                                           ^[m[K
+[01m[K/home/parallels/catkin_ws/src/baxter_kinect_calibration/src/calibrate_kinect_alvar_bundle.cpp:133:58:[m[K [01;35m[Kwarning: [m[Kextended initializer lists only available with -std=c++11 or -std=gnu++11
+   int *yPoints = getTwoValidPoints(corners_3D, new int[2]{1,0}, new int[2]{2,3});  
+[01;32m[K                                                          ^[m[K
+[01m[K/home/parallels/catkin_ws/src/baxter_kinect_calibration/src/calibrate_kinect_alvar_bundle.cpp:133:75:[m[K [01;35m[Kwarning: [m[Kextended initializer lists only available with -std=c++11 or -std=gnu++11
+   int *yPoints = getTwoValidPoints(corners_3D, new int[2]{1,0}, new int[2]{2,3});  
+[01;32m[K                                                                           ^[m[K

@@ -1,0 +1,1 @@
+/home/parallels/catkin_ws/devel/.private/baxter_kinect_calibration/include/baxter_kinect_calibration/ParamsConfig.h

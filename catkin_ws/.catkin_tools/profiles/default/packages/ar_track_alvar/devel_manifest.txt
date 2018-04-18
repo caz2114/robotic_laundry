@@ -1,0 +1,20 @@
+ar_track_alvar/ar_track_alvar
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/libkinect_filtering.so /home/parallels/catkin_ws/devel/lib/libkinect_filtering.so
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/libar_track_alvar.so /home/parallels/catkin_ws/devel/lib/libar_track_alvar.so
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/libmedianFilter.so /home/parallels/catkin_ws/devel/lib/libmedianFilter.so
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/python2.7/dist-packages/ar_track_alvar/__init__.py /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/ar_track_alvar/__init__.py
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/python2.7/dist-packages/ar_track_alvar/cfg/ParamsConfig.py /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/ar_track_alvar/cfg/ParamsConfig.py
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/python2.7/dist-packages/ar_track_alvar/cfg/__init__.py /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/ar_track_alvar/cfg/__init__.py
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/findMarkerBundlesNoKinect /home/parallels/catkin_ws/devel/lib/ar_track_alvar/findMarkerBundlesNoKinect
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/individualMarkersNoKinect /home/parallels/catkin_ws/devel/lib/ar_track_alvar/individualMarkersNoKinect
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/findMarkerBundles /home/parallels/catkin_ws/devel/lib/ar_track_alvar/findMarkerBundles
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/individualMarkers /home/parallels/catkin_ws/devel/lib/ar_track_alvar/individualMarkers
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/trainMarkerBundle /home/parallels/catkin_ws/devel/lib/ar_track_alvar/trainMarkerBundle
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/createMarker /home/parallels/catkin_ws/devel/lib/ar_track_alvar/createMarker
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/lib/pkgconfig/ar_track_alvar.pc /home/parallels/catkin_ws/devel/lib/pkgconfig/ar_track_alvar.pc
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/share/ar_track_alvar/docs/ParamsConfig-usage.dox /home/parallels/catkin_ws/devel/share/ar_track_alvar/docs/ParamsConfig-usage.dox
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/share/ar_track_alvar/docs/ParamsConfig.wikidoc /home/parallels/catkin_ws/devel/share/ar_track_alvar/docs/ParamsConfig.wikidoc
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/share/ar_track_alvar/docs/ParamsConfig.dox /home/parallels/catkin_ws/devel/share/ar_track_alvar/docs/ParamsConfig.dox
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/share/ar_track_alvar/cmake/ar_track_alvarConfig-version.cmake /home/parallels/catkin_ws/devel/share/ar_track_alvar/cmake/ar_track_alvarConfig-version.cmake
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/share/ar_track_alvar/cmake/ar_track_alvarConfig.cmake /home/parallels/catkin_ws/devel/share/ar_track_alvar/cmake/ar_track_alvarConfig.cmake
+/home/parallels/catkin_ws/devel/.private/ar_track_alvar/include/ar_track_alvar/ParamsConfig.h /home/parallels/catkin_ws/devel/include/ar_track_alvar/ParamsConfig.h

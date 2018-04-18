@@ -1,0 +1,1 @@
+/home/parallels/catkin_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/gripper_action/__init__.py

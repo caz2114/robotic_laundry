@@ -1,0 +1,1 @@
+/home/parallels/catkin_ws/devel/.private/folding_control/lib/pkgconfig/folding_control.pc

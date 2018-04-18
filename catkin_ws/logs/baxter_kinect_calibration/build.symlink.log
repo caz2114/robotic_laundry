@@ -1,0 +1,11 @@
+Symlinking /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/baxter_kinect_calibration/__init__.py
+Symlinking /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/baxter_kinect_calibration/cfg/ParamsConfig.py
+Symlinking /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/baxter_kinect_calibration/cfg/__init__.py
+Symlinking /home/parallels/catkin_ws/devel/lib/baxter_kinect_calibration/bundle_calibrate
+Symlinking /home/parallels/catkin_ws/devel/lib/pkgconfig/baxter_kinect_calibration.pc
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_kinect_calibration/docs/ParamsConfig-usage.dox
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_kinect_calibration/docs/ParamsConfig.wikidoc
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_kinect_calibration/docs/ParamsConfig.dox
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_kinect_calibration/cmake/baxter_kinect_calibrationConfig.cmake
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_kinect_calibration/cmake/baxter_kinect_calibrationConfig-version.cmake
+Symlinking /home/parallels/catkin_ws/devel/include/baxter_kinect_calibration/ParamsConfig.h

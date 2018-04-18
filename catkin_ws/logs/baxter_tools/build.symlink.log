@@ -1,0 +1,4 @@
+Symlinking /home/parallels/catkin_ws/devel/lib/python2.7/dist-packages/baxter_tools/__init__.py
+Symlinking /home/parallels/catkin_ws/devel/lib/pkgconfig/baxter_tools.pc
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_tools/cmake/baxter_toolsConfig.cmake
+Symlinking /home/parallels/catkin_ws/devel/share/baxter_tools/cmake/baxter_toolsConfig-version.cmake

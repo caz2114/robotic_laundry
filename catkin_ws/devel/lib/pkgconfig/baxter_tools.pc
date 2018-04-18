@@ -1,0 +1,1 @@
+/home/parallels/catkin_ws/devel/.private/baxter_tools/lib/pkgconfig/baxter_tools.pc

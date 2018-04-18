@@ -1,0 +1,1 @@
+/home/parallels/catkin_ws/devel/.private/baxter_examples/include/baxter_examples/JointSpringsExampleConfig.h
