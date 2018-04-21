@@ -21,3 +21,10 @@ to
 ```
 SRegion = namedtuple('left','right','top','bottom')
 ```
+
+## main
+
+DistanceFields.cpp is replaced with sklearn's skfmm.distance function (https://pythonhosted.org/scikit-fmm/)
+
+
+
