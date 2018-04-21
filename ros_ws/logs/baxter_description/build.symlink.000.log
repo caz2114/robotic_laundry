@@ -1,0 +1,3 @@
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig.cmake
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig-version.cmake
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/pkgconfig/baxter_description.pc

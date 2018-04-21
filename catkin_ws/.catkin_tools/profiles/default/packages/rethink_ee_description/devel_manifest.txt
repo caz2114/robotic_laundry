@@ -1,4 +1,4 @@
 baxter_common/rethink_ee_description
-/home/parallels/catkin_ws/devel/.private/rethink_ee_description/lib/pkgconfig/rethink_ee_description.pc /home/parallels/catkin_ws/devel/lib/pkgconfig/rethink_ee_description.pc
-/home/parallels/catkin_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake /home/parallels/catkin_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake
-/home/parallels/catkin_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake /home/parallels/catkin_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake /home/student/robotic_laundry/catkin_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake /home/student/robotic_laundry/catkin_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/rethink_ee_description/lib/pkgconfig/rethink_ee_description.pc /home/student/robotic_laundry/catkin_ws/devel/lib/pkgconfig/rethink_ee_description.pc

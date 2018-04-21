@@ -1,0 +1,1 @@
+/home/student/robotic_laundry/ros_ws/devel/.private/catkin_tools_prebuild/setup.bash

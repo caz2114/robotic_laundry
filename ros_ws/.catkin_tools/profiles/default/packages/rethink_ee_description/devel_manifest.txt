@@ -1,0 +1,4 @@
+baxter_common/rethink_ee_description
+/home/student/robotic_laundry/ros_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake /home/student/robotic_laundry/ros_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake
+/home/student/robotic_laundry/ros_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake /home/student/robotic_laundry/ros_ws/devel/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig-version.cmake
+/home/student/robotic_laundry/ros_ws/devel/.private/rethink_ee_description/lib/pkgconfig/rethink_ee_description.pc /home/student/robotic_laundry/ros_ws/devel/lib/pkgconfig/rethink_ee_description.pc

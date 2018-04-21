@@ -1,0 +1,11 @@
+[31m[1mCMake Error[0m at /opt/ros/kinetic/share/image_geometry/cmake/image_geometryConfig.cmake:106 (message):
+  Project 'image_geometry' specifies
+  '/opt/ros/kinetic/include/opencv-3.2.0-dev' as an include dir, which is not
+  found.  It does neither exist as an absolute directory nor in
+  '/opt/ros/kinetic//opt/ros/kinetic/include/opencv-3.2.0-dev'.  Ask the
+  maintainer 'Vincent Rabaud <vincent.rabaud@@gmail.com>' to fix it.
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:76 (find_package)
+  CMakeLists.txt:11 (find_package)
+
+

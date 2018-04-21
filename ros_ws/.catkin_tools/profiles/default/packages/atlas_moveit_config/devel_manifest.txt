@@ -1,0 +1,4 @@
+moveit_robots/atlas_moveit_config
+/home/student/robotic_laundry/ros_ws/devel/.private/atlas_moveit_config/share/atlas_moveit_config/cmake/atlas_moveit_configConfig.cmake /home/student/robotic_laundry/ros_ws/devel/share/atlas_moveit_config/cmake/atlas_moveit_configConfig.cmake
+/home/student/robotic_laundry/ros_ws/devel/.private/atlas_moveit_config/share/atlas_moveit_config/cmake/atlas_moveit_configConfig-version.cmake /home/student/robotic_laundry/ros_ws/devel/share/atlas_moveit_config/cmake/atlas_moveit_configConfig-version.cmake
+/home/student/robotic_laundry/ros_ws/devel/.private/atlas_moveit_config/lib/pkgconfig/atlas_moveit_config.pc /home/student/robotic_laundry/ros_ws/devel/lib/pkgconfig/atlas_moveit_config.pc

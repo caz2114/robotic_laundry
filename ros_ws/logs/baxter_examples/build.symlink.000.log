@@ -1,0 +1,11 @@
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_examples/cmake/baxter_examplesConfig.cmake
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_examples/cmake/baxter_examplesConfig-version.cmake
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_examples/docs/JointSpringsExampleConfig.wikidoc
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_examples/docs/JointSpringsExampleConfig-usage.dox
+Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_examples/docs/JointSpringsExampleConfig.dox
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/python2.7/dist-packages/baxter_external_devices/__init__.py
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/python2.7/dist-packages/baxter_examples/__init__.py
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/python2.7/dist-packages/baxter_examples/cfg/__init__.py
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/python2.7/dist-packages/baxter_examples/cfg/JointSpringsExampleConfig.py
+Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/pkgconfig/baxter_examples.pc
+Symlinking /home/student/robotic_laundry/ros_ws/devel/include/baxter_examples/JointSpringsExampleConfig.h

@@ -1,0 +1,1 @@
+/home/student/robotic_laundry/ros_ws/devel/.private/r2_moveit_generated/share/r2_moveit_generated/cmake/r2_moveit_generatedConfig.cmake

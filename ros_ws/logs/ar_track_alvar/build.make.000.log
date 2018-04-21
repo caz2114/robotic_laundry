@@ -1,0 +1,70 @@
+[35m[1mScanning dependencies of target kinect_filtering[0m
+[35m[1mScanning dependencies of target ar_track_alvar_gencfg[0m
+[35m[1mScanning dependencies of target ar_track_alvar[0m
+[  2%] [34m[1mGenerating dynamic reconfigure files from cfg/Params.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/include/ar_track_alvar/ParamsConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/python2.7/dist-packages/ar_track_alvar/cfg/ParamsConfig.py[0m
+Generating reconfiguration files for Params in ar_track_alvar
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/include/ar_track_alvar/ParamsConfig.h
+[  2%] Built target ar_track_alvar_gencfg
+[  4%] [32mBuilding CXX object CMakeFiles/kinect_filtering.dir/src/kinect_filtering.cpp.o[0m
+[  6%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Pose.cpp.o[0m
+[  8%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Camera.cpp.o[0m
+[ 10%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/CaptureDevice.cpp.o[0m
+[ 12%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Rotation.cpp.o[0m
+[ 14%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Marker.cpp.o[0m
+[ 16%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Bitset.cpp.o[0m
+[ 18%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/MarkerDetector.cpp.o[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/CvTestbed.cpp.o[0m
+[ 22%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/CaptureFactory.cpp.o[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/CaptureFactory_unix.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/FileFormatUtils.cpp.o[0m
+[ 29%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Threads.cpp.o[0m
+[ 31%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Threads_unix.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Mutex.cpp.o[0m
+[ 35%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Mutex_unix.cpp.o[0m
+[ 37%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/ConnectedComponents.cpp.o[0m
+[ 39%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Line.cpp.o[0m
+[ 41%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Plugin.cpp.o[0m
+[ 43%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Plugin_unix.cpp.o[0m
+[ 45%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/DirectoryIterator.cpp.o[0m
+[ 47%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/DirectoryIterator_unix.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Draw.cpp.o[0m
+[ 52%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Util.cpp.o[0m
+[ 54%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Filter.cpp.o[0m
+[ 56%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Kalman.cpp.o[0m
+[ 58%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/kinect_filtering.cpp.o[0m
+[ 60%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/Optimization.cpp.o[0m
+[ 62%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/MultiMarker.cpp.o[0m
+[ 64%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/MultiMarkerBundle.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/ar_track_alvar.dir/src/MultiMarkerInitializer.cpp.o[0m
+[ 68%] [32m[1mLinking CXX shared library /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/libkinect_filtering.so[0m
+[ 70%] [32m[1mLinking CXX shared library /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/libar_track_alvar.so[0m
+[ 70%] Built target kinect_filtering
+[ 70%] Built target ar_track_alvar
+[35m[1mScanning dependencies of target individualMarkersNoKinect[0m
+[35m[1mScanning dependencies of target createMarker[0m
+[35m[1mScanning dependencies of target individualMarkers[0m
+[35m[1mScanning dependencies of target trainMarkerBundle[0m
+[35m[1mScanning dependencies of target medianFilter[0m
+[35m[1mScanning dependencies of target findMarkerBundlesNoKinect[0m
+[ 72%] [32mBuilding CXX object CMakeFiles/medianFilter.dir/src/medianFilter.cpp.o[0m
+[ 75%] [32mBuilding CXX object CMakeFiles/createMarker.dir/src/SampleMarkerCreator.cpp.o[0m
+[ 77%] [32mBuilding CXX object CMakeFiles/trainMarkerBundle.dir/nodes/TrainMarkerBundle.cpp.o[0m
+[ 79%] [32mBuilding CXX object CMakeFiles/individualMarkersNoKinect.dir/nodes/IndividualMarkersNoKinect.cpp.o[0m
+[ 81%] [32mBuilding CXX object CMakeFiles/individualMarkers.dir/nodes/IndividualMarkers.cpp.o[0m
+[ 83%] [32mBuilding CXX object CMakeFiles/findMarkerBundlesNoKinect.dir/nodes/FindMarkerBundlesNoKinect.cpp.o[0m
+[ 85%] [32m[1mLinking CXX shared library /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/libmedianFilter.so[0m
+[ 85%] Built target medianFilter
+[35m[1mScanning dependencies of target findMarkerBundles[0m
+[ 87%] [32mBuilding CXX object CMakeFiles/findMarkerBundles.dir/nodes/FindMarkerBundles.cpp.o[0m
+[ 89%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/trainMarkerBundle[0m
+[ 91%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/findMarkerBundles[0m
+[ 93%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/findMarkerBundlesNoKinect[0m
+[ 95%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/individualMarkersNoKinect[0m
+[ 97%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/individualMarkers[0m
+[100%] [32m[1mLinking CXX executable /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib/ar_track_alvar/createMarker[0m
+[100%] Built target findMarkerBundlesNoKinect
+[100%] Built target trainMarkerBundle
+[100%] Built target createMarker
+[100%] Built target individualMarkersNoKinect
+[100%] Built target individualMarkers
+[100%] Built target findMarkerBundles

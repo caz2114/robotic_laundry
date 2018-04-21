@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/student/robotic_laundry/ros_ws/devel/.private/rethink_ee_description/setup.sh

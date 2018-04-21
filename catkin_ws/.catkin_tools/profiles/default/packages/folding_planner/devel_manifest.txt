@@ -1,4 +1,4 @@
 folding_planner
-/home/parallels/catkin_ws/devel/.private/folding_planner/lib/pkgconfig/folding_planner.pc /home/parallels/catkin_ws/devel/lib/pkgconfig/folding_planner.pc
-/home/parallels/catkin_ws/devel/.private/folding_planner/share/folding_planner/cmake/folding_plannerConfig.cmake /home/parallels/catkin_ws/devel/share/folding_planner/cmake/folding_plannerConfig.cmake
-/home/parallels/catkin_ws/devel/.private/folding_planner/share/folding_planner/cmake/folding_plannerConfig-version.cmake /home/parallels/catkin_ws/devel/share/folding_planner/cmake/folding_plannerConfig-version.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/folding_planner/share/folding_planner/cmake/folding_plannerConfig.cmake /home/student/robotic_laundry/catkin_ws/devel/share/folding_planner/cmake/folding_plannerConfig.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/folding_planner/share/folding_planner/cmake/folding_plannerConfig-version.cmake /home/student/robotic_laundry/catkin_ws/devel/share/folding_planner/cmake/folding_plannerConfig-version.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/folding_planner/lib/pkgconfig/folding_planner.pc /home/student/robotic_laundry/catkin_ws/devel/lib/pkgconfig/folding_planner.pc

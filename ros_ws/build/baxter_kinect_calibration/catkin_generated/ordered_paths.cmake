@@ -1,0 +1,1 @@
+set(ORDERED_PATHS "/home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar/lib;/opt/ros/kinetic/lib")

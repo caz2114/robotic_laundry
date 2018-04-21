@@ -1,0 +1,1 @@
+/home/student/robotic_laundry/ros_ws/devel/.private/baxter_maintenance_msgs/share/roseus/ros/baxter_maintenance_msgs/manifest.l

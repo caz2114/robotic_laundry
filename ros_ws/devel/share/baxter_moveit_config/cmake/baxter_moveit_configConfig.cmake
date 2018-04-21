@@ -1,0 +1,1 @@
+/home/student/robotic_laundry/ros_ws/devel/.private/baxter_moveit_config/share/baxter_moveit_config/cmake/baxter_moveit_configConfig.cmake

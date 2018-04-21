@@ -1,4 +1,4 @@
 baxter_common/baxter_description
-/home/parallels/catkin_ws/devel/.private/baxter_description/lib/pkgconfig/baxter_description.pc /home/parallels/catkin_ws/devel/lib/pkgconfig/baxter_description.pc
-/home/parallels/catkin_ws/devel/.private/baxter_description/share/baxter_description/cmake/baxter_descriptionConfig-version.cmake /home/parallels/catkin_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig-version.cmake
-/home/parallels/catkin_ws/devel/.private/baxter_description/share/baxter_description/cmake/baxter_descriptionConfig.cmake /home/parallels/catkin_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/baxter_description/share/baxter_description/cmake/baxter_descriptionConfig.cmake /home/student/robotic_laundry/catkin_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/baxter_description/share/baxter_description/cmake/baxter_descriptionConfig-version.cmake /home/student/robotic_laundry/catkin_ws/devel/share/baxter_description/cmake/baxter_descriptionConfig-version.cmake
+/home/student/robotic_laundry/catkin_ws/devel/.private/baxter_description/lib/pkgconfig/baxter_description.pc /home/student/robotic_laundry/catkin_ws/devel/lib/pkgconfig/baxter_description.pc

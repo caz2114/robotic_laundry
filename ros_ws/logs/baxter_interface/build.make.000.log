@@ -1,0 +1,19 @@
+[35m[1mScanning dependencies of target baxter_core_msgs_generate_messages_py[0m
+[  0%] Built target baxter_core_msgs_generate_messages_py
+[35m[1mScanning dependencies of target baxter_interface_gencfg[0m
+[ 20%] [34m[1mGenerating dynamic reconfigure files from cfg/GripperActionServer.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/GripperActionServerConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_interface/cfg/GripperActionServerConfig.py[0m
+[ 40%] [34m[1mGenerating dynamic reconfigure files from cfg/VelocityJointTrajectoryActionServer.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/VelocityJointTrajectoryActionServerConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_interface/cfg/VelocityJointTrajectoryActionServerConfig.py[0m
+[ 60%] [34m[1mGenerating dynamic reconfigure files from cfg/PositionFFJointTrajectoryActionServer.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/PositionFFJointTrajectoryActionServerConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_interface/cfg/PositionFFJointTrajectoryActionServerConfig.py[0m
+[ 80%] [34m[1mGenerating dynamic reconfigure files from cfg/PositionJointTrajectoryActionServer.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/PositionJointTrajectoryActionServerConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_interface/cfg/PositionJointTrajectoryActionServerConfig.py[0m
+[100%] [34m[1mGenerating dynamic reconfigure files from cfg/HeadActionServer.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/HeadActionServerConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/lib/python2.7/dist-packages/baxter_interface/cfg/HeadActionServerConfig.py[0m
+Generating reconfiguration files for GripperActionServer in baxter_interface
+Generating reconfiguration files for PositionJointTrajectoryActionServer in baxter_interface
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/GripperActionServerConfig.h
+Generating reconfiguration files for VelocityJointTrajectoryActionServer in baxter_interface
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/PositionJointTrajectoryActionServerConfig.h
+Generating reconfiguration files for PositionFFJointTrajectoryActionServer in baxter_interface
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/VelocityJointTrajectoryActionServerConfig.h
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/PositionFFJointTrajectoryActionServerConfig.h
+Generating reconfiguration files for HeadActionServer in baxter_interface
+Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_interface/include/baxter_interface/HeadActionServerConfig.h
+[100%] Built target baxter_interface_gencfg

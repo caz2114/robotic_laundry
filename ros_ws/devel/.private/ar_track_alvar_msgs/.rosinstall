@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar_msgs/setup.sh
