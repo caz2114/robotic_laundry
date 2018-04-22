@@ -1,17 +1,17 @@
 import numpy as np
-from ImageUtil import *
-from ImagePreprocesser import *
+from ImageUtil import ImageUtil
+from ImagePreprocesser import ImagePreprocesser
 from math import sqrt
 
 class FoldPlanner:
     # WARNING! MAY NOT BE BEST WAY TO INITIALIZE... MAY LEAD TO ERRORS
     # keyPoint has .id,.x,.y
-    point_list = np.array() # vector<keyPoint>* 
-    traj_load = np.array()# vector<np.array> 
-    mapped_traj = np.array()# vector<cv::Point3f> 
+    point_list = np.array([]) # vector<keyPoint>* 
+    traj_load = np.array([]) # vector<np.array> 
+    mapped_traj = np.array([]) # vector<cv::Point3f> 
 
-    start_pos = np.empty()# np.array  
-    end_pos = np.empty()# np.array 
+    start_pos = np.array([]) # np.array  
+    end_pos = np.array([]) # np.array 
 
     def __init__(self):
         pass
@@ -123,9 +123,9 @@ class FoldPlanner:
     
     def LoadTrajectory(fileName):
         # Clear previous loaded trajectory.
-        traj_load = np.array()
+        traj_load = np.array([])
         # Read trajectory
-        with f as open(fileName, "r"):
+        with open(fileName, "r") as f:
             for line in f:
                 f1,f2 = line.split(" ")
                 f1,f2 = float(f1),float(f2)
@@ -133,7 +133,7 @@ class FoldPlanner:
     
     def WriteMappedTrajToFile():
         # Write to file.
-        with fp as open("mapped_keypoints.txt", "w"):
+        with open("mapped_keypoints.txt", "w") as fp: 
             for i in mapped_traj:
                 if i[0] == -1.0:
                     fp.write("\n")
