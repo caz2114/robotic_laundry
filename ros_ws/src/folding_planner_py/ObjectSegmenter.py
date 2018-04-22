@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 class ObjectSegmenter:
 
@@ -9,6 +10,15 @@ class ObjectSegmenter:
   def process_watershed(self, image, garment_type):
 
     markers = self.create_watershed_marker(image, garment_type)
+    cv2.imshow('markers', markers)
+    cv2.waitKey(0)
+    cv2.imshow('image', image)
+    cv2.waitKey(0)
+
+    print(image.dtype)
+    print(markers.dtype)
+    print(image.shape)
+    print(markers.shape)
 
     markers = cv2.watershed(image, markers)
 
@@ -17,7 +27,10 @@ class ObjectSegmenter:
 
   def create_watershed_marker(self, image, garment_type):
 
-    markers = np.zeros(image.shape)
+    #markers = cv2.Mat(image.shape[:2], cv2.CV_32SC1)
+    print(cv2.CV_32SC1)
+
+    markers = np.zeros(image.shape[:2], dtype=np.uint8)
 
     markers[0:5, 0:5] = 100
     markers[-5:, -5:] = 100
@@ -25,7 +38,7 @@ class ObjectSegmenter:
     markers[-5:, 0:5] = 100
 
 
-    if garment_type.PANTS:
+    if False: #garment_type.PANTS:
       y = image.shape[0] * 3/4
       x = image.shape[1] * 1/2 
       
