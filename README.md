@@ -1,6 +1,6 @@
 # robotic_laundry
 
-
+## notable changes
 struct SDisplayParams is a wrapper for SRegion so Catherine combined them. 
 ```
 struct SRegion
@@ -22,15 +22,19 @@ to
 SRegion = namedtuple('left','right','top','bottom')
 ```
 
+## Files Completed 
+-GarmentTemplate.py : Catherine
 
-## Chris files being worked on: 
-
+## Currently Working on
+### Catherine
+- Registration.py : 90% 
+- ObjectSegmenter.py : 0% will start
+- dataTypes.py : 30% 
+### Chris
 - main.py
 - objectSegmenter.py
 - ImagePreprocessor.py
 - ImageUtil.py
-- Registration.py **(NOT VERY FAR ALONG)**
-
 
 DistanceFields.cpp is replaced with sklearn's skfmm.distance function (https://pythonhosted.org/scikit-fmm/)
 
