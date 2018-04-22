@@ -34,6 +34,9 @@ SRegion = namedtuple('left','right','top','bottom')
 - objectSegmenter.py
 - ImagePreprocessor.py
 - ImageUtil.py
+### Roop
+- FoldPlanner.py -- pretty sure imports aren't working, look into. (.x,.y will likely error)
+- main.py -- in progress
 
 ## Not completed
 - ObjectSegmenter.py : Catherine in pipeline
