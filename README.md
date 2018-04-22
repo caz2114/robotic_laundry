@@ -28,13 +28,16 @@ SRegion = namedtuple('left','right','top','bottom')
 ## Currently Working on
 ### Catherine
 - Registration.py : 90% 
-- ObjectSegmenter.py : 0% will start
 - dataTypes.py : 30% 
 ### Chris
 - main.py
 - objectSegmenter.py
 - ImagePreprocessor.py
 - ImageUtil.py
+
+## Not completed
+- ObjectSegmenter.py : Catherine in pipeline
+- FoldPlanner.py
 
 DistanceFields.cpp is replaced with sklearn's skfmm.distance function (https://pythonhosted.org/scikit-fmm/)
 
