@@ -1,7 +1,7 @@
 from ImagePreprocessor import ImagePreprocessor
 #from FoldPlanner import FoldPlanner
 import sys
-from collections import Enum
+#import skfmm
 
 
 
