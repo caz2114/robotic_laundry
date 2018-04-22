@@ -23,12 +23,13 @@ SRegion = namedtuple('left','right','top','bottom')
 ```
 
 ## Files Completed 
--GarmentTemplate.py : Catherine
+- GarmentTemplate.py : Catherine
+- dataTypes.py : Catherine
 
 ## Currently Working on
 ### Catherine
 - Registration.py : 90% 
-- dataTypes.py : 30% 
+
 ### Chris
 - main.py
 - objectSegmenter.py
