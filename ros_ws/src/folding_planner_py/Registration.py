@@ -115,15 +115,15 @@ def computeEnergy_bending(in_params, in_curve, in_position):
             ii = i
             iip = (i + 1) % nVert
 
-            restL_m = in_curve.restLengths((i + nVert - 1) % nVert)
-            restL = in_curve.restLengths(i)
+            restL_m = in_curve.restLengths[(i + nVert - 1) % nVert]
+            restL = in_curve.restLengths[i]
         else:
             iim = i
             ii = i + 1
             iip = i + 2
 
-            restL_m = in_curve.restLengths(i)
-            restL = in_curve.restLengths(i+1)
+            restL_m = in_curve.restLengths[i]
+            restL = in_curve.restLengths[i+1]
 
         energy += computeSegmentBendingEnergy(in_position[:,iim], in_position[:,ii], in_position[:,iip],\
 			in_params.alpha, restL_m, restL, in_curve.restAngles[i])
@@ -171,15 +171,15 @@ def compute_f_bending(in_params, in_curve, in_position, io_f, offset_row):
             ii = i
             iip = (i + 1) % nVert
 
-            restL_m = in_curve.restLengths((i + nVert - 1) % nVert)
-            restL = in_curve.restLengths(i)
+            restL_m = in_curve.restLengths[(i + nVert - 1) % nVert]
+            restL = in_curve.restLengths[i]
         else:
             iim = i
             ii = i + 1
             iip = i + 2
 
-            restL_m = in_curve.restLengths(i)
-            restL = in_curve.restLengths(i+1)
+            restL_m = in_curve.restLengths[i]
+            restL = in_curve.restLengths[i+1]
 
         e_im = in_position[:,ii] - in_position[:,iim]
         e_i = in_position[:,iip] - in_position[:,ii]
@@ -212,9 +212,6 @@ def Compute_f(in_params, in_curve, in_vars, io_f):
 
     assert io_f.shape[0] == nElems
     assert in_curve.nVertices == in_position.shape[1]
-
-    # TODO: check function
-    io_f.setZero();
 
     compute_f_elastic(in_params, in_curve, in_vars.pos, io_f, 0)
     compute_f_bending(in_params, in_curve, in_vars.pos, io_f, nSegs)
@@ -284,15 +281,15 @@ def computeNumericalDerivative_bending(in_params, in_curve, in_position, epsilon
             ii = i
             iip = (i + 1) % in_curve.nVertices
 
-            restL_m = in_curve.restLengths((i + in_curve.nVertices - 1) % in_curve.nVertices)
-            restL = in_curve.restLengths(i)
+            restL_m = in_curve.restLengths[(i + in_curve.nVertices - 1) % in_curve.nVertices]
+            restL = in_curve.restLengths[i]
         else:
             iim = i
             ii = i + 1
             iip = i + 2
 
-            restL_m = in_curve.restLengths(i)
-            restL = in_curve.restLengths(i+1)
+            restL_m = in_curve.restLengths[i]
+            restL = in_curve.restLengths[i+1]
 
         xim = in_position[:,iim]
         xi = in_position[:,ii]
@@ -392,9 +389,6 @@ def ComputeNumericalDerivative(in_params, in_curve, in_vars, epsilon, io_jacobia
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
 
-    # TODO: WHAT IS THIS
-    io_jacobian.setZero()
-
     computeNumericalDerivative_elastic(in_params, in_curve, in_vars.pos, epsilon, io_jacobian, 0)
     computeNumericalDerivative_bending(in_params, in_curve, in_vars.pos, epsilon, io_jacobian, nSegs)
     computeNumericalDerivative_fit(in_params, in_curve, in_vars.pos, epsilon, io_jacobian, nSegs+nAngles)
@@ -456,8 +450,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
 
     io_curve.nVertices = len(pos)
 
-    # TODO: hecking for this
-    io_curve.restLengths.reshape(nSegs)
+    io_curve.restLengths = np.zeros(nSegs)
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
     io_curve.restAngles = np.zeros(nAngles)
     io_curve.vertexIDs = np.arrange(io_curve.nVertices)
@@ -494,8 +487,7 @@ def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_v
     io_solver_vars.k += 1
     io_solver_vars.A_muI = np.transpose(io_solver_vars.B) * io_solver_vars.B + io_solver_vars.mu * io_solver_vars.I;
 
-    # TODO: do this line late lmfao
-    # io_solver_vars.h = io_solver_vars.A_muI.ldlt().solve(-io_solver_vars.g);
+    io_solver_vars.h = np.linalg.solve(io_solver_vars.A, -1*io_solver_vars.g)
 
     if np.linalg.norm(io_solver_vars.h) <= in_params.epsilon_2 * (np.linalg.norm(io_solver_vars.x.pos) + in_params.epsilon_2) :
         io_solver_vars.found = True
@@ -513,21 +505,22 @@ def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_v
 
     if gain > 0:
         io_solver_vars.x = io_solver_vars.xnew
+
         Compute_f(in_params, in_curve, io_solver_vars.x, io_solver_vars.f)
         ComputeNumericalDerivative(in_params, in_curve, io_solver_vars.x, io_solver_vars.epsilon, io_solver_vars.B)
-        # TODO: check if this matrix multiplication of regular
-        io_solver_vars.g = np.transpose(io_solver_vars.B) * io_solver_vars.f
-        # TODO: WHAT DOES THIS MEAN LMFAO
-		# io_solver_vars.found = (io_solver_vars.g.lpNorm<Eigen::Infinity>() <= in_params->epsilon_1)
-        # print ("k: %d, gain: %f, |g|_inf: %f\n", io_solver_vars.k, gain, io_solver_vars.g.lpNorm<Eigen::Infinity>())
-        io_solver_vars.mu = io_solver_vars.mu * max(1.0/3.0, 1.0 - (2.0 * gain - 1.0) * (2.0 * gain - 1.0) * (2.0 * gain - 1.0))
+
+        io_solver_vars.g = np.multiply(np.transpose(io_solver_vars.B), io_solver_vars.f)
+        io_solver_vars.found = np.amax(np.abs(io_solver_vars.g)) <= in_params.epsilon_1
+        print("k:{}, gain: {}, |g|_inf: {}".format(io_solver_vars.k, gain, np.amax(np.abs(io_solver_vars.g))))
+
+        io_solver_vars.mu = io_solver_vars.mu * max(1.0/3.0, 1.0 - (2.0 * gain - 1.0)**3)
         io_solver_vars.nu = 2.0
     else:
         io_solver_vars.mu = io_solver_vars.mu * io_solver_vars.nu
         io_solver_vars.nu = io_solver_vars.nu * 2.0
 
     if io_solver_vars.found:
-        print ("found in %d steps\n", io_solver_vars.k)
+        print ("found in {} steps\n".format(io_solver_vars.k))
 
     solution = io_solver_vars.x
     return io_solver_vars.found or io_solver_vars.k > in_params.kmax
@@ -537,9 +530,7 @@ def ShowFeaturePoints(in_curve, solution):
     print("Feature points:")
     for i in range(in_curve.nVertices):
         if in_curve.vertexIDs[i] >= 0:
-            # TODO : its printing something
-            pass
-			# print("%d: %f, %f\n", in_curve.vertexIDs(i), solution.pos.col(i).x(), solution.pos.col(i).y());
+            print("{}: {}, {}".format(in_curve.vertexIDs[i], solution.pos[:,i].x(), solution.pos[:,i].y()))
 
 # void SecantLMMethod(const SParameters* in_params, SCurve* in_curve, SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
 def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
@@ -549,6 +540,6 @@ def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solutio
 		if SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_vars, solution): break
 		UpdateCurveSubdivision(in_params, in_initial_vars, solution, in_curve, io_solver_vars)
 
-	print("found in %d steps\n", io_solver_vars.k)
+	print("found in {} steps".format(io_solver_vars.k))
 	solution = io_solver_vars.x
 	ShowFeaturePoints(in_curve, solution)
