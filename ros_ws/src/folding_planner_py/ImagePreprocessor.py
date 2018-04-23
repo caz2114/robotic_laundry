@@ -1,65 +1,74 @@
 import cv2
 import numpy as np
 from ObjectSegmenter import ObjectSegmenter
+from collections import namedtuple
+
+class KeyPt(namedtuple('KeyPt', ['ptId', 'x',  'y'])):
+  __slots__ = ()
 
 
 class ImagePreprocessor:
 
   def __init__(self):
-    self.roi = ((0,100),(880,430));
-    self.mask_size = 1000
+    self.roi = ((0, 100),(600,400))
+    self.roi_x = 0
+    self.roi_y = 100
+    self.roi_width = 600
+    self.roi_height = 300
+    
+    self.maskSize = 800
 
     self.objectSegmenter = ObjectSegmenter()
+
+    self.pointList = []
     
-  def generate_garment_mask(self,file_name, garment_type):
-    img = self.crop_rect_roi(file_name)
-    # cv.threshold
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU+cv2.THRESH_BINARY_INV)
+  def generateGarmentMask(self,fileName, garmentType):
+    img = self.cropRectRoi(fileName)
+    markers = self.objectSegmenter.processWatershed(img, garmentType)
+    garmentMask = self.createSquareGarmentMask(markers)
+    return garmentMask
 
-    kernel = np.ones((3,3),np.uint8)
-    opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
-
-    # sure background area
-    sure_bg = cv2.dilate(opening,kernel,iterations=3)
-    # Finding sure foreground area
-    dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,5)
-
-    ret, sure_fg = cv2.threshold(dist_transform,0.7*dist_transform.max(),255,0)
-    # Finding unknown region
-    sure_fg = np.uint8(sure_fg)
-    unknown = cv2.subtract(sure_bg,sure_fg)
-
-    ret, markers = cv2.connectedComponents(sure_fg)
-    markers = markers+1
-    markers[unknown==255] = 0
-
-    markers = cv2.watershed(img,markers)
-
-    img[markers == -1] = [255,0,0]
-    img[markers != -1] = [0,0,0]
-    cv2.imshow('markers', img)
-    cv2.waitKey(0)
-
-    garment_mask = self.create_square_garment_mask(markers)
-
-    return garment_mask
-
-  def crop_rect_roi(self,file_name):
-    img_load = cv2.imread(file_name, cv2.IMREAD_COLOR)
+  def cropRectRoi(self,fileName):
+    imgLoad = cv2.imread(fileName, cv2.IMREAD_COLOR)
     (x1, y1), (x2, y2) = self.roi
-    return img_load[y1:y2, x1:x2]
+    return imgLoad[y1:y2, x1:x2]
 
-  def segment_object(self, img, garment_type):
-    return self.objectSegmenter.process_watershed(img, garment_type)
+  def segmentObject(self, img, garmentType):
+    return self.objectSegmenter.processWatershed(img, garmentType)
 
-  def create_square_garment_mask(self, img):
+  def createSquareGarmentMask(self, img):
 
-    y1 = max(0, img.shape[0] / 2 - self.mask_size / 2 )
-    x1 = max(0, img.shape[1] / 2 - self.mask_size / 2 )
+    y1 = max(0, img.shape[0] / 2 - self.maskSize / 2 )
+    x1 = max(0, img.shape[1] / 2 - self.maskSize / 2 )
 
-    print(y1,x1)
-    return img[y1:, x1:, :]
-  
+    return img[y1:, x1:]
 
-    
+  def rescalePoints(self, ptId, ptPos):
+    for i in range(len(ptId)):
+      if ptId.vertexIDs[i] >= 0:
+        x = ptPos.pos.col[i].x()
+        y = ptPos.pos.col[i].y()
+
+        x = x / 2 * self.mask_size / 2 + self.roi_width / 2
+        y = (self.roi_width / 2) - (y / 2) * (self.maskSize / 2) + self.roi_y
+
+        keyPoint = keyPt(ptId.vertexIDs[i], x, y)
+
+        self.pointList.append(keyPoint) 
+
+    self.testPoints()
+    self.writePointToFile()
+
+  def testPoints(self):
+    for k in self.pointsList:
+      x = k.y
+      y = k.y
+
+      self.img[y-4:y+4, x-4:x+4] = [0,0,255]
+   
+  def writePointToFile(self):
+    with open('keypoints.txt', 'w') as f:
+      for point in self.pointsList:
+        f.write("%d %d %d \n" % (point.id, point.x, point.y))
+
+

@@ -7,47 +7,52 @@ class ObjectSegmenter:
     pass
     
 
-  def process_watershed(self, image, garment_type):
+  def processWatershed(self, img, garmentType):
 
-    markers = self.create_watershed_marker(image, garment_type)
-    cv2.imshow('markers', markers)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU+cv2.THRESH_BINARY_INV)
+
+    kernel = np.ones((3,3), np.uint8)
+    opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
+
+    # sure background area
+    sureBg = cv2.dilate(opening,kernel,iterations=3)
+
+    # Finding sure foreground area
+    distTransform = cv2.distanceTransform(opening,cv2.DIST_L2,5)
+
+    ret, sureFg = cv2.threshold(distTransform,0.7*distTransform.max(),255,0)
+
+    # Finding unknown region
+    sureFg = np.uint8(sureFg)
+
+    unknown = cv2.subtract(sureBg, sureFg)
+
+    markers = self.createWatershedMarker(sureFg, unknown)
+
+    markers = cv2.watershed(img, markers)
+
+    # make sure border of image is not 'marker'
+    markers[:5, :] = 1
+    markers[-5:, :] = 1
+    markers[:, -5:] = 1
+    markers[:, :5] = 1
+
+    img[markers == -1] = [255, 0,0]
+    img[markers != -1] = [0,0,0]
+
+    cv2.imshow('img', img)
     cv2.waitKey(0)
-    cv2.imshow('image', image)
-    cv2.waitKey(0)
-
-    print(image.dtype)
-    print(markers.dtype)
-    print(image.shape)
-    print(markers.shape)
-
-    markers = cv2.watershed(image, markers)
 
     return markers
 
 
-  def create_watershed_marker(self, image, garment_type):
+  def createWatershedMarker(self, image, unknown):
+    ret, markers = cv2.connectedComponents(image)
 
-    #markers = cv2.Mat(image.shape[:2], cv2.CV_32SC1)
-    print(cv2.CV_32SC1)
+    markers += 1
 
-    markers = np.zeros(image.shape[:2], dtype=np.uint8)
-
-    markers[0:5, 0:5] = 100
-    markers[-5:, -5:] = 100
-    markers[0:5, -5:] = 100
-    markers[-5:, 0:5] = 100
-
-
-    if False: #garment_type.PANTS:
-      y = image.shape[0] * 3/4
-      x = image.shape[1] * 1/2 
-      
-      markers[y-5:y+5, x-20:x+20] = 250
-
-    else:
-      y = image.shape[0] * 1/2
-      x = image.shape[1] * 1/2 
-      
-      markers[y-2:y+2, x-2:x+2] = 250
+    markers[unknown==255] = 0
 
     return markers
+

@@ -1,7 +1,9 @@
 from ImagePreprocessor import ImagePreprocessor
 #from FoldPlanner import FoldPlanner
 import sys
-#import skfmm
+import skfmm
+import cv2
+import numpy as np
 
 
 
@@ -26,15 +28,15 @@ params = {
     'bottom': -2.0,
   }
 }
+
 '''
 curve = {
 	closed = true
 	nVertices = 64
 	restAngles.resize(curve.nVertices)
         curve.restLengths.resize(curve.nVertices)
-
-
 }'''
+
 
 def gen_initial_vars():
   pass
@@ -45,22 +47,24 @@ if __name__ == "__main__":
   argv = sys.argv
 
   filename = argv[1]
-  garment_type = argv[2]
+  garmentType = argv[2]
 
-  mask = imagePreprocessor.generate_garment_mask(filename, garment_type)
+  mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
 
   df = skfmm.distance(mask)
 
-  cv2.imshow('test', df)
+  cv2.imshow('df', df/255)
   cv2.waitKey(0)
 
-  gen_initial_vars()
-  gen_garment_vars()
+  genInitialVars()
+  genGarmentVars()
 
-  secantLMMethod(params, curve, initial_vars, solver_vars, vars)
+  secantLMMethod(params, curve, initialVars, solverVars, vars)
 
-  points_list = imagePreprocessor.rescale_points(curve, vars)
+  points_list = imagePreprocessor.rescalePoints(curve, vars)
 
-  foldPlanner.mapping_trajectory(points_list, garment_type)
+  foldPlanner.mappingTrajectory(pointsList, garmentType)
 
-  
+
+
+
