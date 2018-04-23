@@ -184,13 +184,14 @@ def main():
     vision = baxter_vision.DepthInterface(tros)
 
     # RPC module, IP address of the Kinect Windows machine
-    com = Client('128.59.22.121', sys.argv[1])
+#     com = Client('128.59.22.121', sys.argv[1])
     fc = fold_control.FoldControl(height-0.04, tros)
     fc.open_arms('both')
+    TODO: call baxter_vision main function in order to generate mapped_keypoints.txt
 
     # Fetch key points from remote machine.
     rospy.sleep(4)
-    fetch_keypoint(vision, com)
+#     fetch_keypoint(vision, com)
 
     # Parse and transform fetched way point locations
     pts = [line for line in open('mapped_keypoints.txt')]
