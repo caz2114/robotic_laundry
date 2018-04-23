@@ -1,4 +1,6 @@
 import math
+import numpy as np
+from datatypes import initSolverVars
 
 class SPoint2d:
     def __init__():
@@ -9,7 +11,7 @@ class SPoint2d:
 def ComputeAngle(input_one, input_two):
     r_sinT = input_one[0]*input_two[1] - input_one[1]*input_two[0]
     r_cosT = -1 * np.sum(np.dot(input_one, input_two))
-    return atan2(r_sinT, r_cosT)
+    return np.arctan2(r_sinT, r_cosT)
 
 def sgn(x):
     return 1.0 if x >= 0.0 else -1.0

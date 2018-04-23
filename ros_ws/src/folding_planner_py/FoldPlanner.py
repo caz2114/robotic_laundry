@@ -1,6 +1,6 @@
 import numpy as np
 from ImageUtil import ImageUtil
-from ImagePreprocesser import ImagePreprocesser
+from ImagePreprocessor import ImagePreprocessor
 from math import sqrt
 
 class FoldPlanner:

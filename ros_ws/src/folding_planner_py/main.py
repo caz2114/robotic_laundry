@@ -1,11 +1,13 @@
 from ImagePreprocessor import ImagePreprocessor
 from GarmentTemplate import initGarmentTemplate
-from datatypes import initSolverVars, SParameters
+from Registration import SecantLMMethod
+from datatypes import initSolverVars, SParameters, SSolverVars
 from FoldPlanner import FoldPlanner
 import sys
 import skfmm
 import cv2
 import numpy as np
+from collections import namedtuple
 
 '''
 SParameters params;
@@ -18,6 +20,8 @@ SSolverVars solverVars;
 
 imagePreprocessor = ImagePreprocessor()
 foldPlanner = FoldPlanner()
+GarmentType = namedtuple('garmentType', ['SWEATER', 'PANTS', 'TOWEL'])
+
 
 def genInitialVars():
   curve = SCurve(True, 64, np.zeros((64,)), np.zeros((64,)), np.zeros((64,)))
@@ -48,19 +52,28 @@ if __name__ == "__main__":
   argv = sys.argv
 
   filename = argv[1]
-  garmentType = argv[2]
-
+  garmentType = None
+  
+  if argv[2] == 'SWEATER':
+    garmentType = GarmentType(True, False, False)
+  elif argv[2] == 'PANTS':
+    garmentType = GarmentType(False, True, False)
+  elif argv[2] == 'TOWEL':
+    garmentType = GarmentType(False, False, True)
+    
   mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
 
   df = skfmm.distance(mask)
 
-  curve, vars = initGarmentTemplate() 
   params = initParams(df)
-  
-  
 
+  curve, vars = initGarmentTemplate(garmentType) 
 
-  Registration.secantLMMethod(params, curve, initialVars, solverVars, vars)
+  initialVars = vars
+
+  solverVars = SSolverVars()
+
+  SecantLMMethod(params, curve, initialVars, solverVars, vars)
 
   points_list = imagePreprocessor.rescalePoints(curve, vars)
 
