@@ -30,25 +30,25 @@ class FoldPlanner:
         # np.array
         start_pos = np.array((point_list[2].x + point_list[3].x) / 2.0, (point_list[2].y + point_list[3].y) / 2.0)
             
-        end_pos = np.array(point_list[7], point_list[7])
+        end_pos = np.array(point_list[7].x, point_list[7].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # From 9&8 to 4
         self.LoadTrajectory("maya_trajectory_sweater/trajectory_right_arm_fold.txt")
-        start_pos = np.array((point_list[8] + point_list[9])/2.0,(point_list[8] + point_list[9])/2.0)
-        end_pos = np.array(point_list[4], point_list[4])
+        start_pos = np.array((point_list[8].x + point_list[9].x)/2.0,(point_list[8].y + point_list[9].y)/2.0)
+        end_pos = np.array(point_list[4].x, point_list[4].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # Bottom up: 5->1
         self.LoadTrajectory("maya_trajectory_sweater/trajectory_left_arm_bottom_up.txt")
-        start_pos = np.array(point_list[5], point_list[5])
-        end_pos   = np.array(point_list[1], point_list[1])
+        start_pos = np.array(point_list[5].x, point_list[5].y)
+        end_pos   = np.array(point_list[1].x, point_list[1].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # Bottom up: 6->10
         self.LoadTrajectory("maya_trajectory_sweater/trajectory_right_arm_bottom_up.txt")
-        start_pos = np.array(point_list[6], point_list[6])
-        end_pos   = np.array(point_list[10], point_list[10])
+        start_pos = np.array(point_list[6].x, point_list[6].y)
+        end_pos   = np.array(point_list[10].x, point_list[10].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # Write all converted trajectories to file.
@@ -58,20 +58,20 @@ class FoldPlanner:
     
         # Bottom up: 5->2
         self.LoadTrajectory("maya_trajectory_pants/trajectory_left_arm_bottom_up.txt")
-        start_pos = np.array(point_list[5], point_list[5])
-        end_pos   = np.array(point_list[2], point_list[2])
+        start_pos = np.array(point_list[5].x, point_list[5].y)
+        end_pos   = np.array(point_list[2].x, point_list[2].y)
         self.Interpolate3D(start_pos, end_pos)
         
         # Bottom up: 4->3
         self.LoadTrajectory("maya_trajectory_pants/trajectory_right_arm_bottom_up.txt")
-        start_pos = np.array(point_list[4], point_list[4])
-        end_pos   = np.array(point_list[3], point_list[3])
+        start_pos = np.array(point_list[4].x, point_list[4].y)
+        end_pos   = np.array(point_list[3].x, point_list[3].y)
         self.Interpolate3D(start_pos, end_pos)
         
         # From 1&2 to (3+4)/2&3
         self.LoadTrajectory("maya_trajectory_pants/trajectory_left_arm_fold.txt")
-        start_pos = np.array((point_list[1] + point_list[2])/2.0,(point_list[1] + point_list[2])/2.0)
-        end_pos   = np.array(((point_list[3] + point_list[4])/2.0 + point_list[3])/2, ((point_list[3] + point_list[4])/2.0 + point_list[3])/2.0)
+        start_pos = np.array((point_list[1].x + point_list[2].x)/2.0,(point_list[1].y + point_list[2].y)/2.0)
+        end_pos   = np.array(((point_list[3].x + point_list[4].x)/2.0 + point_list[3].x)/2, ((point_list[3].y + point_list[4].y)/2.0 + point_list[3].y)/2.0)
         self.Interpolate3D(start_pos, end_pos)
     
         # Write all converted trajectories to file.
@@ -82,20 +82,20 @@ class FoldPlanner:
     
         # Bottom up 2->3
         self.LoadTrajectory("maya_trajectory_towel/trajectory_right_arm_bottom_up.txt")
-        start_pos = np.array(point_list[2], point_list[2])
-        end_pos   = np.array(point_list[3], point_list[3])
+        start_pos = np.array(point_list[2].x, point_list[2].y)
+        end_pos   = np.array(point_list[3].x, point_list[3].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # Bottom up 0->1
         self.LoadTrajectory("maya_trajectory_towel/trajectory_left_arm_bottom_up.txt")
-        start_pos = np.array(point_list[1], point_list[1])
-        end_pos   = np.array(point_list[0], point_list[0])
+        start_pos = np.array(point_list[1].x, point_list[1].y)
+        end_pos   = np.array(point_list[0].x, point_list[0].y)
         self.Interpolate3D(start_pos, end_pos)
     
         # Left arm fold
         self.LoadTrajectory("maya_trajectory_towel/trajectory_left_arm_fold.txt")
-        start_pos = np.array(((point_list[2] + point_list[3])/2.0 + point_list[3])/2.0, ((point_list[2] + point_list[3])/2.0 + point_list[3])/2.0)
-        end_pos   = np.array(((point_list[0] + point_list[1])/2.0 + point_list[0])/2.0, ((point_list[0] + point_list[1])/2.0 + point_list[0])/2.0)
+        start_pos = np.array(((point_list[2].x + point_list[3].x)/2.0 + point_list[3].x)/2.0, ((point_list[2].y + point_list[3].y)/2.0 + point_list[3].y)/2.0)
+        end_pos   = np.array(((point_list[0].x + point_list[1].x)/2.0 + point_list[0].x)/2.0, ((point_list[0].y + point_list[1].y)/2.0 + point_list[0].y)/2.0)
         self.Interpolate3D(start_pos, end_pos)
     
         # Write all converted trajectories to file.
