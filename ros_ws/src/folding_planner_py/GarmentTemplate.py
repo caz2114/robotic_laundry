@@ -2,25 +2,21 @@ import numpy as np
 from datatypes import SCurve, SVar, resize
 from ImageUtil import GarmentType
 
-def initGarmentTemplate(io_curve, io_vars, Garmentype):
+def initGarmentTemplate():
     if type == GarmentType.SWEATER:
-        initSweaterTemplate(io_curve, io_vars)
+        return initSweaterTemplate()
     elif type == GarmentType.PANTS:
-        initPantsTemplate(io_curve, io_vars)
+        return initPantsTemplate()
     else:
-        initTowelTemplate(io_curve, io_vars)
+        return initTowelTemplate()
 
 
 # void initSweaterTemplate(SCurve* io_curve, SVar& io_vars)
-def initSweaterTemplate(io_curve, io_vars):
-    io_curve.closed = True
-    io_curve.nVertices = 12
-    io_curve.restAngles = np.zeros(io_curve.nVertices)
-    io_curve.restLengths = np.zeros(io_curve.nVertices)
-    io_curve.vertexIDs = np.arrange(io_curve.nVertices)
-
-    io_vars.pos = np.ndarray((2,io_curve.nVertices))
-    io_vars.conf = np.zeros(io_curve.nVertices)
+def initSweaterTemplate():
+    closed = True
+    nVerticies = 12
+    io_curve = SCurve(closed, nVerticies, np.zeros(nVerticies), np.zeros(nVerticies), np.zeros(nVerticies))
+    io_vars = SVar(np.ndarray((2,io_curve.nVertices)), np.zeros(nVerticies)
 
     io_vars.pos[0][0] = -0.2
     io_vars.pos[1][0] =  0.9
@@ -60,15 +56,13 @@ def initSweaterTemplate(io_curve, io_vars):
         io_curve.restAngles[i] = ComputeAngle(e_im, e_i)
         io_curve.restLengths[i] = np.linalg.norm(e_i)
 
-def initPantsTemplate(io_curve, io_vars):
-    io_curve.closed = True
-    io_curve.nVertices = 4
-    io_curve.restAngles = np.zeros(io_curve.nVertices)
-    io_curve.restLengths = np.zeros(io_curve.nVertices)
-    io_curve.vertexIDs = np.arrange(io_curve.nVertices)
+    return io_curve, io_vars
 
-    io_vars.pos = np.ndarray((2,io_curve.nVertices))
-    io_vars.conf = np.zeros(io_curve.nVertices)
+def initPantsTemplate():
+    closed = True
+    nVerticies = 12
+    io_curve = SCurve(closed, nVerticies, np.zeros(nVerticies), np.zeros(nVerticies), np.zeros(nVerticies))
+    io_vars = SVar(np.ndarray((2,io_curve.nVertices)), np.zeros(nVerticies)
 
     io_vars.pos[0][0] =  0.2
     io_vars.pos[1][0] =  0.0
@@ -98,15 +92,13 @@ def initPantsTemplate(io_curve, io_vars):
         io_curve.restAngles[i] = ComputeAngle(e_im, e_i)
         io_curve.restLengths[i] = np.linalg.norm(e_i)
 
-def initTowelTemplate(io_curve, io_vars):
-    io_curve.closed = True
-    io_curve.nVertices = 4
-    io_curve.restAngles = np.zeros(io_curve.nVertices)
-    io_curve.restLengths = np.zeros(io_curve.nVertices)
-    io_curve.vertexIDs = np.arrange(io_curve.nVertices)
+    return io_curve, io_vars
 
-    io_vars.pos = np.ndarray((2,io_curve.nVertices))
-    io_vars.conf = np.zeros(io_curve.nVertices)
+def initTowelTemplate():
+    closed = True
+    nVerticies = 12
+    io_curve = SCurve(closed, nVerticies, np.zeros(nVerticies), np.zeros(nVerticies), np.zeros(nVerticies))
+    io_vars = SVar(np.ndarray((2,io_curve.nVertices)), np.zeros(nVerticies)
 
     io_vars.pos[0][0] =  1.5;
     io_vars.pos[1][0] =  1.0
@@ -129,3 +121,5 @@ def initTowelTemplate(io_curve, io_vars):
         # theta
         io_curve.restAngles[i] = ComputeAngle(e_im, e_i)
         io_curve.restLengths[i] = np.linalg.norm(e_i)
+
+    return io_curve, io_vars

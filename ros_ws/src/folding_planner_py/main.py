@@ -1,45 +1,46 @@
 from ImagePreprocessor import ImagePreprocessor
-#from FoldPlanner import FoldPlanner
+from GarmentTemplate import initGarmentTemplate
+from datatypes import initSolverVars, SParameters
+from FoldPlanner import FoldPlanner
 import sys
 import skfmm
 import cv2
 import numpy as np
 
-
+'''
+SParameters params;
+SCurve curve;
+SVar initialVars;
+SVar vars;
+SDisplayParams displayParams;
+SSolverVars solverVars;
+'''
 
 imagePreprocessor = ImagePreprocessor()
-#foldPlanner = FoldPlanner()
+foldPlanner = FoldPlanner()
 
-params = {
-  'alpha':  0.001,
-  'YA':  0.01,
-  'fit':  20000.0,
-  'conf':  100.0,
-  'substep_fit':  16,
-  'delta':  1.0e-4,
-  'tau':  0.001,
-  'kmax':  200,
-  'epsilon_1':  1.0e-10,
-  'epsilon_2':  1.0e-10,
-  'region': {
-    'left': -2.0,
-    'right': 2.0,
-    'top': 2.0,
-    'bottom': -2.0,
-  }
-}
+def genInitialVars():
+  curve = SCurve(True, 64, np.zeros((64,)), np.zeros((64,)), np.zeros((64,)))
 
-'''
-curve = {
-	closed = true
-	nVertices = 64
-	restAngles.resize(curve.nVertices)
-        curve.restLengths.resize(curve.nVertices)
-}'''
+def initParams(df):
+  YA = 0.01
+  alpha = 0.001
+  fit = 20000.0
+  conf = 100.0
+  df = df
+  region_gen = namedtuple('region', ['left', 'right', 'top', 'bottom'])
+  region = region_gen(-2.0, 2.0, 2.0, -2.0)
+  
+  kmax = 200
+  epsilon_1 = 1.0e-10
+  epsilon_2 = 1.0e-10
+  tau = 0.001
+  delta = 1.0e-4
+  substep_fit = 16
+  refLength = 1.0e-1
 
-
-def gen_initial_vars():
-  pass
+  return SParameters(YA, alpha, fit, conf, df, region, kmax, epsilon_1, epsilon_2, tau, delta, substep_fit, refLength)
+  
 
 
 if __name__ == "__main__":
@@ -53,18 +54,17 @@ if __name__ == "__main__":
 
   df = skfmm.distance(mask)
 
-  cv2.imshow('df', df/255)
-  cv2.waitKey(0)
+  curve, vars = initGarmentTemplate() 
+  params = initParams(df)
+  
+  
 
-  genInitialVars()
-  genGarmentVars()
 
-  secantLMMethod(params, curve, initialVars, solverVars, vars)
+  Registration.secantLMMethod(params, curve, initialVars, solverVars, vars)
 
   points_list = imagePreprocessor.rescalePoints(curve, vars)
 
   foldPlanner.mappingTrajectory(pointsList, garmentType)
-
 
 
 
