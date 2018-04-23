@@ -46,4 +46,7 @@ SRegion = namedtuple('left','right','top','bottom')
 DistanceFields.cpp is replaced with sklearn's skfmm.distance function (https://pythonhosted.org/scikit-fmm/)
 
 
+# test script
+
+python main.py test_pants.jpg PANTS
 
