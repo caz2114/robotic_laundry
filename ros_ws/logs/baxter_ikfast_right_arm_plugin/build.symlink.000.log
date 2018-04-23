@@ -1,4 +1,0 @@
-Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_ikfast_right_arm_plugin/cmake/baxter_ikfast_right_arm_pluginConfig-version.cmake
-Symlinking /home/student/robotic_laundry/ros_ws/devel/share/baxter_ikfast_right_arm_plugin/cmake/baxter_ikfast_right_arm_pluginConfig.cmake
-Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/libbaxter_right_arm_moveit_ikfast_plugin.so
-Symlinking /home/student/robotic_laundry/ros_ws/devel/lib/pkgconfig/baxter_ikfast_right_arm_plugin.pc

@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/folding_planner/share/folding_planner/cmake/folding_plannerConfig.cmake

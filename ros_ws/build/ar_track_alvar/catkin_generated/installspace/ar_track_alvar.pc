@@ -1,8 +1,0 @@
-prefix=/home/student/robotic_laundry/ros_ws/install
-
-Name: ar_track_alvar
-Description: Description of ar_track_alvar
-Version: 0.7.0
-Cflags: -I/home/student/robotic_laundry/ros_ws/install/include
-Libs: -L/home/student/robotic_laundry/ros_ws/install/lib -lar_track_alvar
-Requires: ar_track_alvar_msgs std_msgs roscpp tf tf2 message_runtime image_transport sensor_msgs geometry_msgs visualization_msgs resource_retriever cv_bridge pcl_ros pcl_conversions dynamic_reconfigure

@@ -1,5 +1,0 @@
-[100%] [34m[1mGenerating dynamic reconfigure files from cfg/JointSpringsExample.cfg: /home/student/robotic_laundry/ros_ws/devel/.private/baxter_examples/include/baxter_examples/JointSpringsExampleConfig.h /home/student/robotic_laundry/ros_ws/devel/.private/baxter_examples/lib/python2.7/dist-packages/baxter_examples/cfg/JointSpringsExampleConfig.py[0m
-[100%] Built target baxter_examples_xacro_generated_to_devel_space_
-Generating reconfiguration files for JointSpringsExample in joint_torque
-Wrote header file in /home/student/robotic_laundry/ros_ws/devel/.private/baxter_examples/include/baxter_examples/JointSpringsExampleConfig.h
-[100%] Built target baxter_examples_gencfg

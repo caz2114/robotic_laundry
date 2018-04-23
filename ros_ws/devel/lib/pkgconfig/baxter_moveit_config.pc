@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/baxter_moveit_config/lib/pkgconfig/baxter_moveit_config.pc

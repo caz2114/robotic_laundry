@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/baxter_core_msgs/share/roseus/ros/baxter_core_msgs/msg/EndEffectorProperties.l

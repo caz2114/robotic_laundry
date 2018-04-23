@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/atlas_moveit_config/lib/pkgconfig/atlas_moveit_config.pc
