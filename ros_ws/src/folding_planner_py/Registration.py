@@ -541,7 +541,7 @@ def ShowFeaturePoints(in_curve, solution):
     print("Feature points:")
     for i in range(in_curve.nVertices):
         if in_curve.vertexIDs[i] >= 0:
-            print("{}: {}, {}".format(in_curve.vertexIDs[i], solution.pos[:,i].x(), solution.pos[:,i].y()))
+            print("{}: {}, {}".format(in_curve.vertexIDs[i], solution.pos[:,i]))
 
 # void SecantLMMethod(const SParameters* in_params, SCurve* in_curve, SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
 def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
