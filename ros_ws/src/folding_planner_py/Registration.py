@@ -1,11 +1,7 @@
 import math
 import numpy as np
-from datatypes import initSolverVars
-
-class SPoint2d:
-    def __init__():
-        self.x = np.zeros(2)
-
+from copy import deepcopy
+from datatypes import SPoint2D
 
 # double ComputeAngle(const Eigen::Vector2d& input_one, const Eigen::Vector2d& input_two)
 def ComputeAngle(input_one, input_two):
@@ -20,7 +16,7 @@ def sgn(x):
 def ComputeOmegaFromAngle(theta):
 	sinT = math.sin(theta);
 	cosT = math.cos(theta);
-	tan_phi_over_2 = sgn(sinT) * sqrt((1.0+cosT)/(max(0.0, 1.0-cosT) + 1.0e-10));
+	tan_phi_over_2 = sgn(sinT) * math.sqrt((1.0+cosT)/(max(0.0, 1.0-cosT) + 1.0e-10));
 	return 2.0 * tan_phi_over_2;
 
 def computeOmega(input_one, input_two):
@@ -29,30 +25,31 @@ def computeOmega(input_one, input_two):
 # double sampleDistanceField(const SImage<double, 1>& in_df, const SRegion& in_region, const Eigen::Vector2d& x)
 # TODO: check math
 def sampleDistanceField(in_df, in_region, x):
-    assert in_df.width == in_df.height
+    assert in_df.shape[0] == in_df.shape[1]
     assert in_region.right-in_region.left == in_region.top-in_region.bottom
 
     proj_x = x
-    proj_x[0] = max(in_region.left, min(in_region.right, x[0]))
-    proj_y[1] = max(in_region.bottom, min(in_region.top, x[1]))
+    proj_x[0] = max(in_region.left,   min(in_region.right, x[0]))
+    proj_x[1] = max(in_region.bottom, min(in_region.top,   x[1]))
 
-    dist_scale = (in_region.right-in_region.left) / in_df.width
+    dist_scale = (in_region.right-in_region.left) / in_df.shape[1]
 
-    fi = (proj_x[0] - in_region.left) * in_df.width / (in_region.right - in_region.left)
-    fj = (proj_x(1) - in_region.bottom) * in_df.height / (in_region.top - in_region.bottom)
-    _i = math.floor(fi)
-    _j = math.floor(fj)
+    fi = (proj_x[0] - in_region.left)   * in_df.shape[1] / (in_region.right - in_region.left)
+    fj = (proj_x[1] - in_region.bottom) * in_df.shape[0] / (in_region.top - in_region.bottom)
 
-    i = max(0,min(in_df.width - 1, int(_i)))
-    j = max(0,min(in_df.height - 1, int(_j)))
-    ip = min(in_df.width-1, i+1);
-    jp = min(in_df.height-1, j+1);
+    i  = max(0, min(in_df.shape[1]-1, int(fi)))
+    j  = max(0, min(in_df.shape[0]-1, int(fj)))
 
-    s = fi - _i
-    t = fj - _j
+    ip = min(in_df.shape[1]-1, i+1);
+    jp = min(in_df.shape[0]-1, j+1);
 
-    dist_proj = (1.0 - t) * (s * in_df.ptr[j*in_df.width+ip] + (1.0-s) * in_df.ptr[j*in_df.width+i]) \
-		+ t * (s * in_df.ptr[jp*in_df.width+ip] + (1.0-s) * in_df.ptr[jp*in_df.width+i]);
+    s = fi - int(fi)
+    t = fj - int(fj)
+    
+    
+    in_df_flat = in_df.flatten()
+    dist_proj = (1.0 - t) * (s * in_df_flat[j*in_df.shape[1]+ip] + (1.0-s) * in_df_flat[j*in_df.shape[1]+i]) \
+		+ t * (s * in_df_flat[jp*in_df.shape[1]+ip] + (1.0-s) * in_df_flat[jp*in_df.shape[1]+i])
 
     return dist_proj * dist_scale + np.linalg.norm(proj_x - x)
 
@@ -77,9 +74,10 @@ def integrateDF2OverSegment(in_params, x1, x2, rest_length):
 
 # inline double computeSegmentElasticEnergy(const Eigen::Vector2d& p1, const Eigen::Vector2d& p2, const double& YA, const double& rest_length)
 # ignoring inline
-def computeSegmentBendingEnergy(p1, p2, YA, rest_length):
+def computeSegmentElasticEnergy(p1, p2, YA, rest_length):
     diff = p1 - p2
-    return 0.5 * YA * rest_length * (np.linalg.norm(diff)/rest_length - 1)**2
+
+    return 0.5 * YA * rest_length * (np.linalg.norm(diff)/rest_length - 1.0)**2
 
 # inline double computeSegmentBendingEnergy(const Eigen::Vector2d& pp, const Eigen::Vector2d& pc, const Eigen::Vector2d& pn,
 # 	const double& alpha, const double& rest_length_p, const double& rest_length_n, const double& theta)
@@ -101,7 +99,7 @@ def computeEnergy_elastic(in_params, in_curve, in_position):
 
     for i in range(nSegs):
         # assuming in_posistion is a matric 2 by d
-        energy += computeSegmentElasticEnergy(in_position[:,(i+1)%nVert], in_position[:,i], in_params.YA, in_curve.restLength[i])
+        energy += computeSegmentElasticEnergy(in_position[:,(i+1)%nVert], in_position[:,i], in_params.YA, in_curve.restLengths[i])
 
     return energy
 
@@ -138,7 +136,7 @@ def computeEnergy_fit(in_params, in_curve, in_position):
 
     energy = 0.0
     for i in range(nSegs):
-        int_df_seg = integrateDF2OverSegmenty(in_params, in_position[:,i], in_position[:,(i+1)%nVert], in_curve.restLength[i])
+        int_df_seg = integrateDF2OverSegment(in_params, in_position[:,i], in_position[:,(i+1)%nVert], in_curve.restLengths[i])
         energy += 0.5 * in_params.fit * int_df_seg
 
     return energy
@@ -163,11 +161,12 @@ def compute_f_elastic(in_params, in_curve, in_position, io_f, offset_row):
 # void compute_f_bending(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, Eigen::VectorXd& io_f, int offset_row)
 def compute_f_bending(in_params, in_curve, in_position, io_f, offset_row):
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
+    nVert = in_curve.nVertices
 
     assert io_f.shape[0] >= nAngles + offset_row
     assert in_curve.nVertices == in_position.shape[1]
 
-    for i in range(nAngle):
+    for i in range(nAngles):
         if in_curve.closed:
             iim = (i + nVert - 1) % nVert
             ii = i
@@ -200,7 +199,7 @@ def compute_f_fit(in_params, in_curve, in_position, io_f, offset_row):
     assert in_curve.nVertices == in_position.shape[1]
 
     for i in range(nSegs):
-        int_df_seg = integrateDF2OverSegmenty(in_params, in_position[:,i], in_position[:,(i+1)%nVert], in_curve.restLength[i])
+        int_df_seg = integrateDF2OverSegment(in_params, in_position[:,i], in_position[:,(i+1)%nVert], in_curve.restLengths[i])
         io_f[i+offset_row] = math.sqrt(in_params.fit * 0.5) * math.sqrt(int_df_seg)
 
 
@@ -213,7 +212,7 @@ def Compute_f(in_params, in_curve, in_vars, io_f):
     nElems = 2 * nSegs + nAngles
 
     assert io_f.shape[0] == nElems
-    assert in_curve.nVertices == in_position.shape[1]
+    assert in_curve.nVertices == in_vars.pos.shape[1]
 
     compute_f_elastic(in_params, in_curve, in_vars.pos, io_f, 0)
     compute_f_bending(in_params, in_curve, in_vars.pos, io_f, nSegs)
@@ -223,6 +222,10 @@ def Compute_f(in_params, in_curve, in_vars, io_f):
 # void computeNumericalDerivative_elastic(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, double epsilon, Eigen::MatrixXd& io_jacobian, int offset_row)
 def computeNumericalDerivative_elastic(in_params, in_curve, in_position, epsilon, io_jacobian, offset_row):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
+
+    print('nSegs', nSegs)
+    print('curvVertices', in_curve.nVertices)
+    
 
     assert io_jacobian.shape[0] >= nSegs + offset_row
     assert io_jacobian.shape[1] == in_curve.nVertices * 2
@@ -268,6 +271,7 @@ def computeNumericalDerivative_elastic(in_params, in_curve, in_position, epsilon
 #
 # void computeNumericalDerivative_bending(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, double epsilon, Eigen::MatrixXd& io_jacobian, int offset_row)
 def computeNumericalDerivative_bending(in_params, in_curve, in_position, epsilon, io_jacobian, offset_row):
+    nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
 
     assert io_jacobian.shape[0] >= nSegs + offset_row
@@ -328,7 +332,7 @@ def computeNumericalDerivative_bending(in_params, in_curve, in_position, epsilon
 
         # omega_bar will be cancelled out, so omit i
         fi = math.sqrt(in_params.alpha/(restL_m + restL)) * omega
-        fi_im_dx = smath.qrt(in_params.alpha/(restL_m + restL)) * omega_im_dx
+        fi_im_dx = math.sqrt(in_params.alpha/(restL_m + restL)) * omega_im_dx
         fi_im_dy = math.sqrt(in_params.alpha/(restL_m + restL)) * omega_im_dy
         fi_i_dx = math.sqrt(in_params.alpha/(restL_m + restL)) * omega_i_dx
         fi_i_dy = math.sqrt(in_params.alpha/(restL_m + restL)) * omega_i_dy
@@ -357,7 +361,7 @@ def computeNumericalDerivative_fit(in_params, in_curve, in_position, epsilon, io
 
 	# dfit/dxi, dfit/dyi
     for i in range(nSegs):
-		# l_i is a function of x_i, x_{i+1}, y_i and y_{i+1}
+	# l_i is a function of x_i, x_{i+1}, y_i and y_{i+1}
         ip = (i+1) % in_curve.nVertices
 
         xi = in_position[:,i]
@@ -368,7 +372,7 @@ def computeNumericalDerivative_fit(in_params, in_curve, in_position, epsilon, io
 
 		# dfit/dxi_i
         xi_dx = xi + dx
-        fi_i_dx = math.sqrt(in_params.fit * 0.5) * sqrt(integrateDF2OverSegment(in_params, xi_dx, xip, restL))
+        fi_i_dx = math.sqrt(in_params.fit * 0.5) * math.sqrt(integrateDF2OverSegment(in_params, xi_dx, xip, restL))
         io_jacobian[i+offset_row, i] = (fi_i_dx - fi) / epsilon
 
 		# dfit/dyi_i
@@ -409,7 +413,7 @@ def UpdateRestLength(in_position, io_curve):
 
 # void UpdateCurveSubdivision(const SParameters* in_params, SVar& io_initial_vars, SVar& io_vars, SCurve* io_curve, SSolverVars& io_solver_vars)
 def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_solver_vars):
-    nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
+    nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
 
     pos = []
     angles = []
@@ -421,7 +425,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
         p = SPoint2D()
         p.x[0] = io_vars.pos[:,i][0]
         p.x[1] = io_vars.pos[:,i][1]
-        pos.append[p]
+        pos.append(p)
         vids.append(io_curve.vertexIDs[i])
 
         if i!=0 or io_curve.closed:
@@ -451,17 +455,21 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
         vids.append(io_curve.vertexIDs[ilast])
 
     io_curve.nVertices = len(pos)
+   
+    nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
 
     io_curve.restLengths = np.zeros(nSegs)
-    nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
+    nAngles = io_curve.nVertices if io_curve.closed else (io_curve.nVertices-2)
     io_curve.restAngles = np.zeros(nAngles)
-    io_curve.vertexIDs = np.arrange(io_curve.nVertices)
+    io_curve.vertexIDs = np.arange(io_curve.nVertices)
 
 
     io_vars.pos = np.ndarray((2,io_curve.nVertices))
     io_vars.conf = np.zeros(io_curve.nVertices)
     io_initial_vars.pos = np.ndarray((2,io_curve.nVertices))
     io_initial_vars.conf = np.zeros(io_curve.nVertices)
+
+    nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
 
     for i in range(io_curve.nVertices):
         io_vars.pos[:,i][0] = pos[i].x[0]
@@ -473,7 +481,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
     for i in range(nSegs):
         ip = (i+1) % io_curve.nVertices
         diff = io_vars.pos[:,ip] - io_vars.pos[:,i]
-        io_curve.restLength[i] = np.linalg.norm(diff)
+        io_curve.restLengths[i] = np.linalg.norm(diff)
 
     for i in range(nAngles):
         io_curve.restAngles[i] = angles[i]
@@ -487,22 +495,23 @@ def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_v
     if io_solver_vars.found or io_solver_vars.k > in_params.kmax: return True
 
     io_solver_vars.k += 1
-    io_solver_vars.A_muI = np.transpose(io_solver_vars.B) * io_solver_vars.B + io_solver_vars.mu * io_solver_vars.I;
+    io_solver_vars.A_muI = np.dot(io_solver_vars.B.T , io_solver_vars.B) + io_solver_vars.mu * io_solver_vars.I;
 
-    io_solver_vars.h = np.linalg.solve(io_solver_vars.A, -1*io_solver_vars.g)
+    io_solver_vars.h = np.linalg.solve(io_solver_vars.A_muI, -1*io_solver_vars.g)
 
     if np.linalg.norm(io_solver_vars.h) <= in_params.epsilon_2 * (np.linalg.norm(io_solver_vars.x.pos) + in_params.epsilon_2) :
         io_solver_vars.found = True
     else:
         for q in range(io_solver_vars.nV):
+
             io_solver_vars.xnew.pos[0, q] = io_solver_vars.x.pos[0, q] + io_solver_vars.h[q]
             io_solver_vars.xnew.pos[1, q] = io_solver_vars.x.pos[1, q] + io_solver_vars.h[q + io_solver_vars.nV]
 
     Fnew = 0.5 * ComputeEnergy(in_params, in_curve, io_solver_vars.xnew)
     F = 0.5 * ComputeEnergy(in_params, in_curve, io_solver_vars.x)
 
-	# gain_denom = - io_solver_vars.h.dot(io_solver_vars.B.transpose() * io_solver_vars.f) \
-	# 	- 0.5 * io_solver_vars.h.dot(io_solver_vars.B.transpose() * io_solver_vars.B * io_solver_vars.h);
+    gain_denom = - io_solver_vars.h.dot(np.dot(io_solver_vars.B.transpose(),  io_solver_vars.f)) \
+	 	- 0.5 * io_solver_vars.h.dot(np.dot(np.dot(io_solver_vars.B.transpose(), io_solver_vars.B), io_solver_vars.h))
     gain = (F - Fnew) / gain_denom
 
     if gain > 0:
@@ -545,3 +554,45 @@ def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solutio
 	print("found in {} steps".format(io_solver_vars.k))
 	solution = io_solver_vars.x
 	ShowFeaturePoints(in_curve, solution)
+
+
+def initSolverVars(in_params, in_curve, in_initial_vars, io_vars, update=False):
+  if not update:
+    io_vars.k = 0;
+    io_vars.nu = 2.0;
+    io_vars.j = 0;
+    io_vars.epsilon = 1.0e-7;
+
+  if not update or io_vars.x.pos.shape[1] != in_curve.nVertices:
+    io_vars.x = deepcopy(in_initial_vars)
+    io_vars.xnew = deepcopy(in_initial_vars)
+
+    nSegs = in_curve.nVertices if in_curve.closed else in_curve - 1
+    nAngles = in_curve.nVertices if in_curve.closed else in_curve - 2
+
+    # io_vars is a SSolverVar type
+    io_vars.m = nSegs + nAngles + nSegs
+    io_vars.n = in_curve.nVertices * 2
+    io_vars.nV = in_curve.nVertices
+
+    io_vars.B = np.zeros((io_vars.m, io_vars.n))
+    io_vars.g = np.zeros(io_vars.n)
+    io_vars.f = np.zeros(io_vars.m)
+
+    io_vars.A_muI = np.zeros((io_vars.n, io_vars.n))
+    io_vars.h = np.zeros(io_vars.n)
+    io_vars.g = np.zeros(io_vars.n)
+    io_vars.I = np.identity(io_vars.n)
+
+  ComputeNumericalDerivative(in_params, in_curve, io_vars.x, io_vars.epsilon, io_vars.B)
+
+  Compute_f(in_params, in_curve, io_vars.x, io_vars.f)
+
+  io_vars.g = np.dot(np.transpose(io_vars.B),io_vars.f)
+  io_vars.A_muI = np.dot(np.transpose(io_vars.B), io_vars.B)
+
+  io_vars.mu = in_params.tau * np.amax(np.abs(io_vars.A_muI))
+  io_vars.found = np.amax(np.abs(io_vars.g)) <= in_params.epsilon_1
+
+  print("|g|_inf: {}\n".format(np.amax(np.abs(io_vars.g))))
+

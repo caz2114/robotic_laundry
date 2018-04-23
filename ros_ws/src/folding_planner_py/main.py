@@ -1,7 +1,7 @@
 from ImagePreprocessor import ImagePreprocessor
 from GarmentTemplate import initGarmentTemplate
-from Registration import SecantLMMethod
-from datatypes import initSolverVars, SParameters, SSolverVars
+from Registration import SecantLMMethod, initSolverVars
+from datatypes import SParameters, SSolverVars
 from FoldPlanner import FoldPlanner
 import sys
 import skfmm
@@ -35,7 +35,7 @@ def initParams(df):
   region_gen = namedtuple('region', ['left', 'right', 'top', 'bottom'])
   region = region_gen(-2.0, 2.0, 2.0, -2.0)
   
-  kmax = 200
+  kmax = 10
   epsilon_1 = 1.0e-10
   epsilon_2 = 1.0e-10
   tau = 0.001
@@ -72,6 +72,8 @@ if __name__ == "__main__":
   initialVars = vars
 
   solverVars = SSolverVars()
+
+  initSolverVars(params, curve, initialVars, solverVars)
 
   SecantLMMethod(params, curve, initialVars, solverVars, vars)
 

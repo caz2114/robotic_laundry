@@ -37,11 +37,14 @@ class ImagePreprocessor:
     return self.objectSegmenter.processWatershed(img, garmentType)
 
   def createSquareGarmentMask(self, img):
+    garment_mask = np.ones((self.maskSize, self.maskSize)) 
+    
+    y1 = self.maskSize / 2 - img.shape[0] / 2 
+    x1 = self.maskSize / 2 - img.shape[1] / 2 
 
-    y1 = max(0, img.shape[0] / 2 - self.maskSize / 2 )
-    x1 = max(0, img.shape[1] / 2 - self.maskSize / 2 )
+    garment_mask[y1:y1+img.shape[0], x1:x1+img.shape[1]] = img
 
-    return img[y1:, x1:]
+    return garment_mask
 
   def rescalePoints(self, ptId, ptPos):
     for i in range(len(ptId)):

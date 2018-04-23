@@ -60,7 +60,7 @@ def initSweaterTemplate():
 
 def initPantsTemplate():
     closed = True
-    nVertices = 12
+    nVertices = 7
     io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.zeros(nVertices))
     io_vars = SVar(nVertices)
 
@@ -96,7 +96,7 @@ def initPantsTemplate():
 
 def initTowelTemplate():
     closed = True
-    nVertices = 12
+    nVertices = 4
     io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.zeros(nVertices))
     io_vars = SVar(nVertices)
 

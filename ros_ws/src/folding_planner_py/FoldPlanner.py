@@ -24,7 +24,7 @@ class FoldPlanner:
         else: # garment == SWEATER:
             self.SweaterPlanner(point_list)
     
-    def SweaterPlanner(self,point_list):
+    def SweaterPlanner(self, point_list):
         # From 2&3 to 7
         self.LoadTrajectory("maya_trajectory_sweater/trajectory_left_arm_fold.txt")
         # np.array
