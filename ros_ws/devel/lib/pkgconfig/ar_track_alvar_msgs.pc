@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/ar_track_alvar_msgs/lib/pkgconfig/ar_track_alvar_msgs.pc

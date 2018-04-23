@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/rethink_ee_description/share/rethink_ee_description/cmake/rethink_ee_descriptionConfig.cmake

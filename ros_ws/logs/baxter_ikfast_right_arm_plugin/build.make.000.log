@@ -1,4 +1,0 @@
-[35m[1mScanning dependencies of target baxter_right_arm_moveit_ikfast_plugin[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/baxter_right_arm_moveit_ikfast_plugin.dir/src/baxter_right_arm_ikfast_moveit_plugin.cpp.o[0m
-[100%] [32m[1mLinking CXX shared library /home/student/robotic_laundry/ros_ws/devel/.private/baxter_ikfast_right_arm_plugin/lib/libbaxter_right_arm_moveit_ikfast_plugin.so[0m
-[100%] Built target baxter_right_arm_moveit_ikfast_plugin

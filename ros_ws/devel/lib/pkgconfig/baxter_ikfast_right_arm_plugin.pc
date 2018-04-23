@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/baxter_ikfast_right_arm_plugin/lib/pkgconfig/baxter_ikfast_right_arm_plugin.pc

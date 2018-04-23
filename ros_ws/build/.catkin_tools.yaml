@@ -1,6 +1,0 @@
-devel_space: /home/student/robotic_laundry/ros_ws/devel
-install: false
-install_space: /home/student/robotic_laundry/ros_ws/install
-profile: default
-source_space: /home/student/robotic_laundry/ros_ws/src
-workspace: /home/student/robotic_laundry/ros_ws

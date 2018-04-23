@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/baxter_core_msgs/share/baxter_core_msgs/cmake/baxter_core_msgsConfig-version.cmake

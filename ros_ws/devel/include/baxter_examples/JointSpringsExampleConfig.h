@@ -1,1 +1,0 @@
-/home/student/robotic_laundry/ros_ws/devel/.private/baxter_examples/include/baxter_examples/JointSpringsExampleConfig.h
