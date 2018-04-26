@@ -41,8 +41,6 @@ class ObjectSegmenter:
     img[markers == -1] = [255, 0,0]
     img[markers != -1] = [0,0,0]
 
-    cv2.imshow('img', img)
-    cv2.waitKey(0)
 
     return markers
 

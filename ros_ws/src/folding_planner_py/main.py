@@ -58,9 +58,8 @@ if __name__ == "__main__":
     garmentType = GarmentType(True, False, False)
   elif argv[2] == 'PANTS':
     garmentType = GarmentType(False, True, False)
-  elif argv[2] == 'TOWEL':
-    garmentType = GarmentType(False, False, True)
-    
+  elif argv[2] == 'TOWEL': garmentType = GarmentType(False, False, True)
+
   mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
 
   df = skfmm.distance(mask)
@@ -77,9 +76,7 @@ if __name__ == "__main__":
 
   SecantLMMethod(params, curve, initialVars, solverVars, vars)
 
-  points_list = imagePreprocessor.rescalePoints(curve, vars)
+  pointList = imagePreprocessor.rescalePoints(curve, vars)
 
-  foldPlanner.mappingTrajectory(pointsList, garmentType)
-
-
+  foldPlanner.MappingTrajectory(pointList, garmentType)
 
