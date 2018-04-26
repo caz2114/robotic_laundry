@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
   initSolverVars(params, curve, initialVars, solverVars)
 
-  SecantLMMethod(params, curve, initialVars, solverVars, vars)
+  cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
 
   pointList = imagePreprocessor.rescalePoints(curve, vars)
 

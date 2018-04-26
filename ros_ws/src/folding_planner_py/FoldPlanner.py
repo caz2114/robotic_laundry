@@ -129,7 +129,7 @@ class FoldPlanner:
             for line in f:
                 f1,f2 = line.split(" ")
                 f1,f2 = float(f1), float(f2)
-                print(FoldPlanner.traj_load, f1, f2)
+                #print(FoldPlanner.traj_load, f1, f2)
                 FoldPlanner.traj_load.append(np.array([f1, f2]))
 
     
@@ -149,7 +149,8 @@ class FoldPlanner:
         # printf("start pos: %f, %f \n", startPos[0], startPos[1])
         # printf("end pos: %f, %f \n", endPos[0], endPos[1])
     
-        print "The size is {}".format(len(FoldPlanner.mapped_traj))
-        print "I am after."
+        #print "The size is {}".format(len(FoldPlanner.mapped_traj))
+        #print "I am after."
         for i in FoldPlanner.mapped_traj:
-            print "Mapped trajectory points: {}  {}  {}".format(i[0], i[1], i[2])
+            pass
+            #print "Mapped trajectory points: {}  {}  {}".format(i[0], i[1], i[2])

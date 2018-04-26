@@ -15,7 +15,7 @@ def initGarmentTemplate(garmentType):
 def initSweaterTemplate():
     closed = True
     nVertices = 12
-    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.zeros(nVertices))
+    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.arange(nVertices))
     io_vars = SVar(nVertices)
 
     io_vars.pos[0][0] = -0.2
@@ -61,7 +61,7 @@ def initSweaterTemplate():
 def initPantsTemplate():
     closed = True
     nVertices = 7
-    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.zeros(nVertices))
+    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.arange(nVertices))
     io_vars = SVar(nVertices)
 
     io_vars.pos[0][0] =  0.2
@@ -97,7 +97,7 @@ def initPantsTemplate():
 def initTowelTemplate():
     closed = True
     nVertices = 4
-    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.zeros(nVertices))
+    io_curve = SCurve(closed, nVertices, np.zeros(nVertices), np.zeros(nVertices), np.arange(nVertices))
     io_vars = SVar(nVertices)
 
     io_vars.pos[0][0] =  1.5;
