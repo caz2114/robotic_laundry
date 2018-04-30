@@ -196,10 +196,10 @@ def main():
     # Parse and transform fetched way point locations
     pts = [line for line in open('mapped_keypoints.txt')]
     pts = parse_waypoints(pts)
-    print "\n\nPOINTS:",len(pts),"\n\n"
+    print "\n\nPOINTS:",pts[0],len(pts),"\n\n"
 
-    fold_cloth(pts, fc, vision, height)
-    # fold_pants(pts, fc, vision, height)
+    # fold_cloth(pts, fc, vision, height)
+    fold_pants(pts, fc, vision, height)
     # fold_towel(pts, fc, vision, height)
 
     rospy.spin()
