@@ -4,7 +4,7 @@ from Registration import SecantLMMethod, initSolverVars
 from datatypes import SParameters, SSolverVars
 from FoldPlanner import FoldPlanner
 import sys
-import skfmm
+# import skfmm
 import cv2
 import numpy as np
 from collections import namedtuple
@@ -66,22 +66,22 @@ if __name__ == "__main__":
   elif garmentTypeStr == 'TOWEL':
     garmentType = GarmentType(False, False, True)
 
-  df = skfmm.distance(mask)
-
-  params = initParams(df)
-
-  # determine type of cloths
-
-  curve, vars = initGarmentTemplate(garmentType)
-
-  initialVars = vars
-
-  solverVars = SSolverVars()
-
-  initSolverVars(params, curve, initialVars, solverVars)
-
-  cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
-
-  pointList = imagePreprocessor.rescalePoints(curve, vars)
-
-  foldPlanner.MappingTrajectory(pointList, garmentType)
+  # df = skfmm.distance(mask)
+  # 
+  # params = initParams(df)
+  #
+  # # determine type of cloths
+  #
+  # curve, vars = initGarmentTemplate(garmentType)
+  #
+  # initialVars = vars
+  #
+  # solverVars = SSolverVars()
+  #
+  # initSolverVars(params, curve, initialVars, solverVars)
+  #
+  # cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
+  #
+  # pointList = imagePreprocessor.rescalePoints(curve, vars)
+  #
+  # foldPlanner.MappingTrajectory(pointList, garmentType)

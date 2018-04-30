@@ -29,12 +29,13 @@ class ImagePreprocessor:
     crop_img = self.cropRectRoi(fileName)
     thresh, kernel, opening = self.objectSegmenter.preprocess(crop_img)
     markers = self.objectSegmenter.processWatershed(crop_img, kernel, opening)
-    garmentMask = self.createSquareGarmentMask(markers)
 
-    garmentType = self.classifyGarment(crop_img,thresh, opening)
+    garmentMask = self.createSquareGarmentMask(markers)
+    garmentType = self.classifyGarment(crop_img, thresh, opening, markers)
+
     return garmentMask, garmentType
 
-  def cropRectRoi(self,fileName):
+  def cropRectRoi(self, fileName):
     self.img = cv2.imread(fileName, cv2.IMREAD_COLOR)
     return deepcopy(self.img[self.roi_y:self.roi_y + self.roi_height, self.roi_x:self.roi_width + self.roi_x])
 
@@ -51,9 +52,13 @@ class ImagePreprocessor:
 
     return garment_mask
 
-  def classifyGarment(self,img, thresh, opening):
+  def classifyGarment(self, img, thresh, opening, cnt):
     # Getting contour for clothing item
-    im2, contours, hierarchy = cv2.findContours(opening, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cloth_cnt = np.zeros(np.shape(img)[:2], np.uint8)
+    cloth_cnt[cnt == 1] = 0
+    cloth_cnt[cnt != 1] = 255
+
+    im2, contours, hierarchy = cv2.findContours(cloth_cnt, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     max_contour = np.argmax([len(i) for i in contours])
     cnt = contours[max_contour]
 
@@ -63,8 +68,10 @@ class ImagePreprocessor:
     cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 
     # Templates for comparision
-    # towel template
+    # clothing bound box
     cloth_bound = thresh[y:(y+h+1),x:(x+w+1)]
+
+    # towel template
     towel_template = 255*np.ones((h+1,w+1),np.uint8)
 
     # resize factor against pant and shirt
@@ -76,6 +83,7 @@ class ImagePreprocessor:
     pant_resize = np.divide(resize_factor,pant_ratio)
 
     pant_cnt = np.array([[0,18],[25,16],[25,2],[0,0],[0,7],[14,9],[0,11]])
+
     pant_resize = np.multiply(pant_cnt, [w/25.0,h/18.0]).astype(int)
     cv2.fillConvexPoly(pant_template, pant_resize, 255)
 
@@ -88,18 +96,56 @@ class ImagePreprocessor:
                         [ 1,  6],[12, 10],[12,  0],\
                         [24,  0],[24, 10],[35,  6],\
                         [36,  14],[23, 20],[20, 19]])
+
     shirt_resize = np.multiply(shirt_cnt, [w/36.0,h/20.0]).astype(int)
     # fillConvexPoly does not completely fill the shape, this is manually creating shirt
     cv2.fillConvexPoly(shirt_template, shirt_resize[2:5], 255)
     cv2.fillConvexPoly(shirt_template, shirt_resize[7:10],255)
     cv2.fillConvexPoly(shirt_template, shirt_resize, 255)
 
+    # print resized templates
+    # cv2.imshow('image',towel_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',pant_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',shirt_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    # print original templates
+    # pant_ori = np.zeros((19,26))
+    # cv2.fillConvexPoly(pant_ori, pant_cnt, 255)
+    # cv2.imshow('image',pant_ori)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # shirt_ori = np.zeros((21,37))
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[2:5], 255)
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[7:10],255)
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt, 255)
+    # cv2.imshow('image',shirt_ori)
+
+    # prints difference between template and garment
+    # cv2.imshow('image',(255 * np.not_equal(towel_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',(255 * np.not_equal(pant_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',(255 * np.not_equal(shirt_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    #score
     towel_score = 1.0 * np.sum(np.not_equal(towel_template,cloth_bound))/((h+1)*(w+1))
     pant_score = 1.0 * np.sum(np.not_equal(pant_template,cloth_bound))/((h+1)*(w+1))
     shirt_score = 1.0 * np.sum(np.not_equal(shirt_template, cloth_bound))/((h+1)*(w+1))
 
     score = [towel_score, pant_score, shirt_score]
     garmentType = ['TOWEL','PANTS','SWEATER']
+
+    print "The percent difference between each item is", score, "for towel, pants, and sweater repectively."
 
     return garmentType[np.argmin(score)]
 
