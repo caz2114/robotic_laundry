@@ -38,10 +38,10 @@ def initSweaterTemplate():
     io_vars.pos[1][8] =  1 * io_vars.pos[1][3]
     io_vars.pos[0][9] = -1 * io_vars.pos[0][2]
     io_vars.pos[1][9] =  1 * io_vars.pos[1][2]
-    io_vars.pos[0][0] = -1 * io_vars.pos[0][1]
-    io_vars.pos[1][0] =  1 * io_vars.pos[1][1]
-    io_vars.pos[0][1] = -1 * io_vars.pos[0][0]
-    io_vars.pos[1][1] =  1 * io_vars.pos[1][0]
+    io_vars.pos[0][10] = -1 * io_vars.pos[0][1]
+    io_vars.pos[1][10] =  1 * io_vars.pos[1][1]
+    io_vars.pos[0][11] = -1 * io_vars.pos[0][0]
+    io_vars.pos[1][11] =  1 * io_vars.pos[1][0]
 
     nSegs = io_curve.nVertices
 

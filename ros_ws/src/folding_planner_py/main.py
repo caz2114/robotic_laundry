@@ -34,7 +34,7 @@ def initParams(df):
   df = df
   region_gen = namedtuple('region', ['left', 'right', 'top', 'bottom'])
   region = region_gen(-2.0, 2.0, 2.0, -2.0)
-  
+
   kmax = 10
   epsilon_1 = 1.0e-10
   epsilon_2 = 1.0e-10
@@ -44,7 +44,7 @@ def initParams(df):
   refLength = 1.0e-1
 
   return SParameters(YA, alpha, fit, conf, df, region, kmax, epsilon_1, epsilon_2, tau, delta, substep_fit, refLength)
-  
+
 
 
 if __name__ == "__main__":
@@ -53,20 +53,26 @@ if __name__ == "__main__":
 
   filename = argv[1]
   garmentType = None
-  
-  if argv[2] == 'SWEATER':
-    garmentType = GarmentType(True, False, False)
-  elif argv[2] == 'PANTS':
-    garmentType = GarmentType(False, True, False)
-  elif argv[2] == 'TOWEL': garmentType = GarmentType(False, False, True)
 
-  mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
+  mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename)
+
+  print "The garment is a type of", garmentTypeStr
+
+  # if argv[2] == 'SWEATER':
+  if garmentTypeStr == 'SWEATER':
+    garmentType = GarmentType(True, False, False)
+  elif garmentTypeStr == 'PANTS':
+    garmentType = GarmentType(False, True, False)
+  elif garmentTypeStr == 'TOWEL':
+    garmentType = GarmentType(False, False, True)
 
   df = skfmm.distance(mask)
 
   params = initParams(df)
 
-  curve, vars = initGarmentTemplate(garmentType) 
+  # determine type of cloths
+
+  curve, vars = initGarmentTemplate(garmentType)
 
   initialVars = vars
 
@@ -79,4 +85,3 @@ if __name__ == "__main__":
   pointList = imagePreprocessor.rescalePoints(curve, vars)
 
   foldPlanner.MappingTrajectory(pointList, garmentType)
-

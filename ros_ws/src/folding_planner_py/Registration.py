@@ -45,8 +45,8 @@ def sampleDistanceField(in_df, in_region, x):
 
     s = fi - int(fi)
     t = fj - int(fj)
-    
-    
+
+
     in_df_flat = in_df.flatten()
     dist_proj = (1.0 - t) * (s * in_df_flat[j*in_df.shape[1]+ip] + (1.0-s) * in_df_flat[j*in_df.shape[1]+i]) \
 		+ t * (s * in_df_flat[jp*in_df.shape[1]+ip] + (1.0-s) * in_df_flat[jp*in_df.shape[1]+i])
@@ -451,7 +451,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
         vids.append(io_curve.vertexIDs[ilast])
 
     io_curve.nVertices = len(pos)
-   
+
     nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
 
     io_curve.restLengths = np.zeros(nSegs)
@@ -541,20 +541,20 @@ def ShowFeaturePoints(in_curve, solution):
 
 # void SecantLMMethod(const SParameters* in_params, SCurve* in_curve, SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
 def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
-	ShowFeaturePoints(in_curve, solution)
+    ShowFeaturePoints(in_curve, solution)
 
-	initSolverVars(in_params, in_curve, in_initial_vars, io_solver_vars)
+    initSolverVars(in_params, in_curve, in_initial_vars, io_solver_vars)
 
-	while(1):
-		if SecantLMMethodSingleUpdate(in_params, in_curve,        in_initial_vars, io_solver_vars, solution): break
-		UpdateCurveSubdivision(in_params,        in_initial_vars, solution,        in_curve,       io_solver_vars)
+    while(1):
+    	if SecantLMMethodSingleUpdate(in_params, in_curve,        in_initial_vars, io_solver_vars, solution): break
+    	UpdateCurveSubdivision(in_params,        in_initial_vars, solution,        in_curve,       io_solver_vars)
 
-	print("found in {} steps".format(io_solver_vars.k))
-	solution = io_solver_vars.x
+    print("found in {} steps".format(io_solver_vars.k))
+    solution = io_solver_vars.x
 
-	ShowFeaturePoints(in_curve, solution)
+    ShowFeaturePoints(in_curve, solution)
 
-        return in_curve, solution
+    return in_curve,solution
 
 
 # void initSolverVars(const SParameters* in_params, const SCurve* in_curve, const SVar& in_initial_vars, SSolverVars& io_vars, bool update)
@@ -597,4 +597,3 @@ def initSolverVars(in_params, in_curve, in_initial_vars, io_vars, update=False):
   io_vars.found = np.amax(np.abs(io_vars.g)) <= in_params.epsilon_1
 
   print("|g|_inf: {}\n".format(np.amax(np.abs(io_vars.g))))
-

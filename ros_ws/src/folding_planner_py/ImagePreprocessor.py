@@ -16,39 +16,94 @@ class ImagePreprocessor:
     self.roi_y = 100
     self.roi_width = 600
     self.roi_height = 300
-    
+
     self.maskSize = 800
 
     self.objectSegmenter = ObjectSegmenter()
 
     self.pointList = []
     self.img = None
-    
-  def generateGarmentMask(self, fileName, garmentType):
+
+  def generateGarmentMaskAndType(self, fileName):
+  # def generateGarmentMask(self, fileName, garmentType):
     crop_img = self.cropRectRoi(fileName)
-    markers = self.objectSegmenter.processWatershed(crop_img, garmentType)
+    thresh, kernel, opening = self.objectSegmenter.preprocess(crop_img)
+    markers = self.objectSegmenter.processWatershed(crop_img, kernel, opening)
     garmentMask = self.createSquareGarmentMask(markers)
-    return garmentMask
+
+    garmentType = self.classifyGarment(crop_img,thresh, opening)
+    return garmentMask, garmentType
 
   def cropRectRoi(self,fileName):
     self.img = cv2.imread(fileName, cv2.IMREAD_COLOR)
     return deepcopy(self.img[self.roi_y:self.roi_y + self.roi_height, self.roi_x:self.roi_width + self.roi_x])
 
-  def segmentObject(self, img, garmentType):
-    return self.objectSegmenter.processWatershed(img, garmentType)
+  def segmentObject(self, img):
+    return self.objectSegmenter.processWatershed(img)
 
   def createSquareGarmentMask(self, img):
-    garment_mask = np.ones((self.maskSize, self.maskSize)) 
-    
-    y1 = self.maskSize / 2 - img.shape[0] / 2 
-    x1 = self.maskSize / 2 - img.shape[1] / 2 
+    garment_mask = np.ones((self.maskSize, self.maskSize))
+
+    y1 = self.maskSize / 2 - img.shape[0] / 2
+    x1 = self.maskSize / 2 - img.shape[1] / 2
 
     garment_mask[y1:y1+img.shape[0], x1:x1+img.shape[1]] = img
 
     return garment_mask
 
-  def rescalePoints(self, ptId, ptPos):
+  def classifyGarment(self,img, thresh, opening):
+    # Getting contour for clothing item
+    im2, contours, hierarchy = cv2.findContours(opening, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    max_contour = np.argmax([len(i) for i in contours])
+    cnt = contours[max_contour]
 
+    # Bounding box around clothing
+    hull = cv2.convexHull(cnt,returnPoints = False)
+    x,y,w,h = cv2.boundingRect(cnt)
+    cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+
+    # Templates for comparision
+    # towel template
+    cloth_bound = thresh[y:(y+h+1),x:(x+w+1)]
+    towel_template = 255*np.ones((h+1,w+1),np.uint8)
+
+    # resize factor against pant and shirt
+    resize_factor = np.array([h+1*1.0,w+1*1.0])
+
+    # pant template
+    pant_template = np.zeros((h+1,w+1), np.uint8)
+    pant_ratio = np.array([25.0,18.0])
+    pant_resize = np.divide(resize_factor,pant_ratio)
+
+    pant_cnt = np.array([[0,18],[25,16],[25,2],[0,0],[0,7],[14,9],[0,11]])
+    pant_resize = np.multiply(pant_cnt, [w/25.0,h/18.0]).astype(int)
+    cv2.fillConvexPoly(pant_template, pant_resize, 255)
+
+    # shirt template
+    shirt_template = np.zeros((h+1,w+1), np.uint8)
+    shirt_ratio = np.array([36.0,20.0])
+    shirt_resize = np.divide(resize_factor,shirt_ratio)
+
+    shirt_cnt = np.array([[16, 19],[13 ,20],[ 0, 14],\
+                        [ 1,  6],[12, 10],[12,  0],\
+                        [24,  0],[24, 10],[35,  6],\
+                        [36,  14],[23, 20],[20, 19]])
+    shirt_resize = np.multiply(shirt_cnt, [w/36.0,h/20.0]).astype(int)
+    # fillConvexPoly does not completely fill the shape, this is manually creating shirt
+    cv2.fillConvexPoly(shirt_template, shirt_resize[2:5], 255)
+    cv2.fillConvexPoly(shirt_template, shirt_resize[7:10],255)
+    cv2.fillConvexPoly(shirt_template, shirt_resize, 255)
+
+    towel_score = 1.0 * np.sum(np.not_equal(towel_template,cloth_bound))/((h+1)*(w+1))
+    pant_score = 1.0 * np.sum(np.not_equal(pant_template,cloth_bound))/((h+1)*(w+1))
+    shirt_score = 1.0 * np.sum(np.not_equal(shirt_template, cloth_bound))/((h+1)*(w+1))
+
+    score = [towel_score, pant_score, shirt_score]
+    garmentType = ['TOWEL','PANTS','SWEATER']
+
+    return garmentType[np.argmin(score)]
+
+  def rescalePoints(self, ptId, ptPos):
     for i in range(ptId.nVertices):
       if ptId.vertexIDs[i] >= 0:
         x = ptPos.pos[0, i]
@@ -63,7 +118,7 @@ class ImagePreprocessor:
 
         keyPoint = KeyPt(ptId.vertexIDs[i], int(x), int(y))
 
-        self.pointList.append(keyPoint) 
+        self.pointList.append(keyPoint)
 
     self.testPoints()
     self.writePointToFile()
@@ -71,7 +126,7 @@ class ImagePreprocessor:
     return self.pointList
 
   def testPoints(self):
-    
+
     for k in self.pointList:
       x = k.x
       y = k.y
@@ -80,10 +135,8 @@ class ImagePreprocessor:
       self.img[y-4:y+4, x-4:x+4] = [0,0,255]
 
     cv2.imwrite('final_img.png', self.img)
-   
+
   def writePointToFile(self):
     with open('keypoints.txt', 'w') as f:
       for point in self.pointList:
-        f.write("%d %d %d \n" % (point.id, point.x, point.y))
-
-
+        f.write("{} {} {} \n".format(point.id, point.x, point.y))

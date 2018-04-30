@@ -1,21 +1,23 @@
 import numpy as np
 import cv2
+from math import acos, degrees
 
 class ObjectSegmenter:
 
   def __init__(self):
     pass
-    
 
-  def processWatershed(self, img, garmentType):
-
+  def preprocess(self, img):
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU+cv2.THRESH_BINARY_INV)
 
     kernel = np.ones((3,3), np.uint8)
     opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
 
-    # sure background area
+    return thresh, kernel, opening
+
+  def processWatershed(self, img, kernel, opening):
+    # Filtering backgroud background area
     sureBg = cv2.dilate(opening,kernel,iterations=3)
 
     # Finding sure foreground area
@@ -41,7 +43,6 @@ class ObjectSegmenter:
     img[markers == -1] = [255, 0,0]
     img[markers != -1] = [0,0,0]
 
-
     return markers
 
 
@@ -53,4 +54,3 @@ class ObjectSegmenter:
     markers[unknown==255] = 0
 
     return markers
-
