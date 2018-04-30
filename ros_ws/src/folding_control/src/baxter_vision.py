@@ -157,13 +157,13 @@ class DepthInterface:
         Return:
         """
         try:
-            frame = self.bridge.imgmsg_to_cv(depth_img, desired_encoding="passthrough")
+            frame = self.bridge.imgmsg_to_cv2(depth_img, desired_encoding="passthrough")
         except CvBridgeError, e:
             print e
 
         # Convert frame to numpy array
         self.depth_image = np.nan_to_num(np.array(frame))
-        # print self.depth_image
+        print self.depth_image
         # sio.savemat('depth_img.mat', self.depth_image)
 
     def image_callback(self, cam_image):
@@ -176,7 +176,7 @@ class DepthInterface:
         """
         try:
             # convert ROS image to OpenCV image
-            frame = self.bridge.imgmsg_to_cv(cam_image, "bgr8")
+            frame = self.bridge.imgmsg_to_cv2(cam_image, "bgr8")
         except CvBridgeError, e:
             print e
 
@@ -206,10 +206,10 @@ class DepthInterface:
 
         c_xy = [self.intrinsic[0,2], self.intrinsic[1,2]]
         f_xy = [self.intrinsic[0,0], self.intrinsic[1,1]]
-        d = self.depth_image[_2d_point[1], _2d_point[0]]
+        d = self.depth_image[int(_2d_point[1]), int(_2d_point[0])]
         x = (_2d_point[0]-c_xy[0])*d/f_xy[0]
         y = (_2d_point[1]-c_xy[1])*d/f_xy[1]
-        pt_3d =  transformation.primesense_to_baxter([d, -x, y], self.tros)
+        pt_3d =  transformation.primesense_to_baxter([d, -int(x), int(y)], self.tros) 
         c_pt_3d = [pt_3d[i] + self.transformation_error[i] for i,k in enumerate(pt_3d)]
         return c_pt_3d
 
@@ -219,7 +219,6 @@ class DepthInterface:
         self.tros = t
         self.intrinsic = numpy.array([line.strip('\n').split(' ') for line in open("parameters/primesense_intrinsic.txt")])
         self.intrinsic = self.intrinsic.astype(float)
-
 
 def main():
     # MOVE THE ROBOT WITH INTERACTIVE UI
