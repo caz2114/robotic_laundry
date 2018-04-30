@@ -1,0 +1,23 @@
+<package>
+  <name>baxter_h2r_packages</name>
+  <version>0.1.0</version>
+  <description>
+    Metapackage for Brown CS H2R baxter hackamegathon
+  </description>
+  <maintainer email="brawener@cs.brown.edu">Stephen Brawner</maintainer>
+  <license>BSD</license>
+
+  <url>http://github.com/h2r/baxter_packages</url>
+  <author>h2r</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>baxter_kinect_calibration</run_depend>
+  <run_depend>baxter_speech_command</run_depend>
+  <run_depend>baxter_grasps_server</run_depend>
+  <run_depend>baxter_hackathon_demos</run_depend>
+  <run_depend>h2r_moveit_config</run_depend>
+  <run_depend>listen_and_grasp</run_depend>
+  <export>
+   <metapackage/>
+ </export>
+</package>

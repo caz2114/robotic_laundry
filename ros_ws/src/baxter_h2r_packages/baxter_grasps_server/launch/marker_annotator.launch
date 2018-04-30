@@ -1,0 +1,5 @@
+<launch>
+	<arg name="marker_size" default="4.8" />
+
+    <node name="marker_annotator" pkg="baxter_grasps_server" type="marker_grasp_annotator.py" output="screen" />
+</launch>

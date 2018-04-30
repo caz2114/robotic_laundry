@@ -187,7 +187,7 @@ def main():
 #     com = Client('128.59.22.121', sys.argv[1])
     fc = fold_control.FoldControl(height-0.04, tros)
     fc.open_arms('both')
-    TODO: call baxter_vision main function in order to generate mapped_keypoints.txt
+    #TODO: call baxter_vision main function in order to generate mapped_keypoints.txt
 
     # Fetch key points from remote machine.
     rospy.sleep(4)
@@ -196,6 +196,7 @@ def main():
     # Parse and transform fetched way point locations
     pts = [line for line in open('mapped_keypoints.txt')]
     pts = parse_waypoints(pts)
+    print "\n\nPOINTS:",len(pts),"\n\n"
 
     fold_cloth(pts, fc, vision, height)
     # fold_pants(pts, fc, vision, height)

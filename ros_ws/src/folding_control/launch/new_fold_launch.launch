@@ -1,0 +1,14 @@
+<launch>
+	<node pkg="baxter_interface" type="joint_trajectory_action_server.py" name="joint_trajectory_action_server"/>
+  	
+  	<include file="$(find baxter_moveit_config)/launch/baxter_grippers.launch"/>
+  	<include file="$(find openni2_launch)/launch/openni2.launch"/>
+	<node pkg="topic_tools" type="relay" args="/robot/joint_states /joint_states" name="joint_relay"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="left_gripper_center_to_wrist"
+      args=" 0 0 0.22 0 0 0 1 /left_wrist /left_gripper_center 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="right_gripper_center_to_wrist"
+      args=" 0 0 0.22 0 0 0 1 /right_wrist /right_gripper_center 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="primesense_to_world"
+      args=" 0 0 0.22 0 0 0 1 /camera_link /world 100"/>
+</launch>

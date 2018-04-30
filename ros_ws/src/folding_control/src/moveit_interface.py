@@ -113,7 +113,7 @@ class MoveitInterface:
         if do_displacement:
             target_height_displacement += target_pos.position.z
         print [target_pos.position.x, target_pos.position.y,
-               target_height_displacement]
+             target_height_displacement]
         self.move_limb(limb_name, [target_pos.position.x, target_pos.position.y,
                                    target_height_displacement])
         
