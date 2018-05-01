@@ -154,7 +154,9 @@ class FoldPlanner:
 
     def planFold(self, img_file):
 
-        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename)
+        
+        imagePreprocessor = ImagePreprocessor()
+        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(img_file)
         
         if garmentTypeStr == 'SWEATER':
             garmentType = GarmentType(True, False, False)
@@ -163,7 +165,7 @@ class FoldPlanner:
         elif garmentTypeStr == 'TOWEL':
             garmentType = GarmentType(False, False, True)
 
-        mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
+        mask = imagePreprocessor.generateGarmentMask(img_file, garmentType)
         df = skfmm.distance(mask)
         params = initParams(df)
         curve, vars = initGarmentTemplate(garmentType) 

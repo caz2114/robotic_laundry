@@ -36,7 +36,8 @@ class ImagePreprocessor:
     return garmentMask, garmentType
 
   def cropRectRoi(self, fileName):
-    self.img = cv2.imread(fileName, cv2.IMREAD_COLOR)
+#     self.img = cv2.imread(fileName, cv2.IMREAD_COLOR)
+    self.img = fileName
     return deepcopy(self.img[self.roi_y:self.roi_y + self.roi_height, self.roi_x:self.roi_width + self.roi_x])
 
   def segmentObject(self, img):

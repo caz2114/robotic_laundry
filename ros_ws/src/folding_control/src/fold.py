@@ -158,6 +158,10 @@ def main():
     fc.open_arms('both')
 
     img = vision.get_img()
+    import cv2
+    cv2.imshow("",img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     pts, garmentType = FoldPlanner().planFold(img)
 
     # fold_cloth(pts, fc, vision, height)
