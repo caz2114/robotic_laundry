@@ -57,6 +57,8 @@ class SPoint2D:
 SParameters = namedtuple('SParameters',['YA','alpha','fit','conf','df','region','kmax','epsilon_1',\
             'epsilon_2','tau','delta','substep_fit','refLength'])
 
+GarmentType = namedtuple('garmentType', ['SWEATER', 'PANTS', 'TOWEL'])
+
 
 
 
