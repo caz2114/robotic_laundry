@@ -27,6 +27,23 @@ orientation_list = \
                     0.67205755566191661, 0.14438691943091997]
 }
 
+def parse_waypoints(pt_list):
+    """
+    Retrive way point from the list.
+    Args:
+        pt_list: Way points list.
+    Return:
+        Parsed way points list for left arm, right arm.
+    """
+    part = []
+    block = []
+    for line in pt_list:
+        if len(line) < 3:
+            block.append(part)
+            part = []
+        else:
+            part.append(line.strip('\r\n'))
+    return block
 
 def transform_waypoints(pt_list, vision, surface_height):
     """
@@ -162,9 +179,14 @@ def main():
     cv2.imshow("",img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    pts, garmentType = FoldPlanner().planFold(img)
+    
+#     _,garmentType = FoldPlanner().planFold(img)
+    # pts, garmentType = FoldPlanner().planFold(img)
+    pts = [line for line in open('mapped_keypoints.txt')]
+    pts = parse_waypoints(pts)
 
-    # fold_cloth(pts, fc, vision, height)
+    # if garmentType TODO
+#     fold_cloth(pts, fc, vision, height)
     fold_pants(pts, fc, vision, height)
     # fold_towel(pts, fc, vision, height)
 

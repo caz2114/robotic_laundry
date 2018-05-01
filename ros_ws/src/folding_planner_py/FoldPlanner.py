@@ -52,7 +52,7 @@ class FoldPlanner:
         region_gen = namedtuple('region', ['left', 'right', 'top', 'bottom'])
         region = region_gen(-2.0, 2.0, 2.0, -2.0)
         
-        kmax = 10
+        kmax = 7
         epsilon_1 = 1.0e-10
         epsilon_2 = 1.0e-10
         tau = 0.001
@@ -211,22 +211,14 @@ class FoldPlanner:
             garmentType = GarmentType(False, False, True)
 
         df = skfmm.distance(mask)
-        print "skfmm"
         params = self.initParams(df)
-        print "skfmm"
         curve, vars = initGarmentTemplate(garmentType) 
-        print "initgarment"
         initialVars = vars
-        print "setting"
         solverVars = SSolverVars()
-        print "ssolver"
 #         initSolverVars(params, curve, initialVars, solverVars)
 #         print "initsolver"
         cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
-        print "secant"
-        sys.exit()
         pointList = imagePreprocessor.rescalePoints(curve, vars)
-        print "rescale"
         self.MappingTrajectory(pointList, garmentType)
 
         return FoldPlanner.mapped_traj, garmentTypeStr
