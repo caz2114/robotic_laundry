@@ -64,16 +64,19 @@ class FoldControl:
         Return:
         """
         # Reach end effector downward from current pose
+        print "ENTERING PICK, side:",side
         if side == 'both':
             # Pad with specially chose end effector position.
 
             location[0][2] = self.grasp_height + 0.1
             location[1][2] = self.grasp_height + 0.1
+            print 111
             path = [[location[0]], [location[1]]]  # Both sides.
+            print 112
             self.moveit.move_cartesian_path(side, path)
-
-            rospy.sleep(5)  # Waiting for TF to complete.
-
+            print 113
+#             rospy.sleep(5)  # Waiting for TF to complete.
+            print "\n\n\n\n\n",114,"\n\n\n\n\n"
             location[0][2] = self.grasp_height-0.01
             location[1][2] = self.grasp_height-0.02
             path = [[location[0]], [location[1]]]  # Both sides.
@@ -84,13 +87,15 @@ class FoldControl:
             if side == 'right':
                 location[1] += 0.025  # Error correction.
                 location[0] += 0.01  # Error correction.
-
+            
             wp = copy.deepcopy(location)
             wp[2] += 0.1
             path = [wp, location]
-
+        print 115
         self.moveit.move_cartesian_path(side, path)
+        print 116
         self.haptics.tactile_grip(side)
+        print 117
 
     def place(self, side, target_location):
         """
@@ -153,13 +158,15 @@ class FoldControl:
         self.haptics.release(side)
         if side == 'both':
             pick_pose = [place_way_points[0][0], place_way_points[1][0]]
-
         else:
             pick_pose = place_way_points[0]
-
+        print 13
         self.pick(side, pick_pose)
+        print 14
         self.moveit.move_cartesian_path(side, place_way_points)
+        print 15
         self.haptics.release(side)
+        print "OUT OF PICK PLACE WAYPOINT\n\n"
 
     def open_arms(self, side):
         """

@@ -12,6 +12,8 @@ from communication_module import Client
 import math
 import tf
 
+sys.path.append('../../folding_planner_py')
+from FoldPlanner import FoldPlanner
 
 """ Main functions to run the Baxter folding.
 """
@@ -24,24 +26,6 @@ orientation_list = \
     'right_pick' : [0.15514553575781437, -0.70952161496983279,
                     0.67205755566191661, 0.14438691943091997]
 }
-
-
-def fetch_keypoint(vision, com):
-    """
-    Send source image and fetch key points from the Windows machine.
-
-    Args:
-        vision: Vision object for image saving.
-        com: Communication module.
-    Return:
-    """
-    fn = "test.jpg"
-    vision.save_img(fn)
-    com.send_file(fn)
-    rospy.sleep(2)
-    com.launch()
-    raw_input("Press key to receive file")
-    com.recv_file("mapped_keypoints.txt")
 
 
 def transform_waypoints(pt_list, vision, surface_height):
@@ -76,27 +60,6 @@ def transform_waypoints(pt_list, vision, surface_height):
     for entry in block:
         entry[2] *= ratio
         entry[2] += surface_height
-
-    return block
-
-
-def parse_waypoints(pt_list):
-    """
-    Retrive way point from the list.
-
-    Args:
-        pt_list: Way points list.
-    Return:
-        Parsed way points list for left arm, right arm.
-    """
-    part = []
-    block = []
-    for line in pt_list:
-        if len(line) < 3:
-            block.append(part)
-            part = []
-        else:
-            part.append(line.strip('\r\n'))
     return block
 
 
@@ -157,11 +120,18 @@ def fold_pants(pts, fc, vision, height):
         w[0] += 0.01
         w[1] += 0.05
 
+
+    print "\n\n PERFORM MOVEMENTS \n\n"
     # Perform movements
+    print 1,"\n\n\n"
     fc.pick_place_waypoint('both', (way_points_left_roll, way_points_right_roll))
+    print 2,"\n\n\n"
     fc.open_arms('both')
+    print 3,"\n\n\n"
     fc.pick_place_waypoint('left', way_points_left_fold)
+    print 4,"\n\n\n"
     fc.open_arms('both')
+    print 5,"\n\n\n"
 
 
 def fold_towel(pts, fc, vision, height):
@@ -184,19 +154,11 @@ def main():
     vision = baxter_vision.DepthInterface(tros)
 
     # RPC module, IP address of the Kinect Windows machine
-#     com = Client('128.59.22.121', sys.argv[1])
     fc = fold_control.FoldControl(height-0.04, tros)
     fc.open_arms('both')
-    #TODO: call baxter_vision main function in order to generate mapped_keypoints.txt
 
-    # Fetch key points from remote machine.
-    rospy.sleep(4)
-#     fetch_keypoint(vision, com)
-
-    # Parse and transform fetched way point locations
-    pts = [line for line in open('mapped_keypoints.txt')]
-    pts = parse_waypoints(pts)
-    print "\n\nPOINTS:",pts[0],len(pts),"\n\n"
+    img = vision.get_img()
+    pts, garmentType = FoldPlanner().planFold(img)
 
     # fold_cloth(pts, fc, vision, height)
     fold_pants(pts, fc, vision, height)

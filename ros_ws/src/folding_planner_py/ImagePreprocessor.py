@@ -118,6 +118,7 @@ class ImagePreprocessor:
     cv2.fillConvexPoly(shirt_template, shirt_resize[2:5], 255)
     cv2.fillConvexPoly(shirt_template, shirt_resize[7:10],255)
     cv2.fillConvexPoly(shirt_template, shirt_resize, 255)
+<<<<<<< HEAD
 
     shirt_score = []
     for i in range(4):
@@ -126,6 +127,15 @@ class ImagePreprocessor:
 
         shirt_score.append(1.0 * np.sum(np.not_equal(template,cloth_bound))/((h+1)*(w+1)))
     return shirt_score
+=======
+    #score
+    towel_score = 1.0 * np.sum(np.not_equal(towel_template,cloth_bound))/((h+1)*(w+1))
+    pant_score = 1.0 * np.sum(np.not_equal(pant_template,cloth_bound))/((h+1)*(w+1))
+    shirt_score = 1.0 * np.sum(np.not_equal(shirt_template, cloth_bound))/((h+1)*(w+1))
+
+    score = [towel_score, pant_score, shirt_score]
+    garmentType = ['TOWEL','PANTS','SWEATER']
+>>>>>>> ea5383ae27282b4a421183cfff65f49c6fba8a1e
 
 
   def rescalePoints(self, ptId, ptPos):
@@ -151,7 +161,6 @@ class ImagePreprocessor:
     return self.pointList
 
   def testPoints(self):
-
     for k in self.pointList:
       x = k.x
       y = k.y
@@ -165,3 +174,42 @@ class ImagePreprocessor:
     with open('keypoints.txt', 'w') as f:
       for point in self.pointList:
         f.write("{} {} {} \n".format(point.id, point.x, point.y))
+
+
+  def printResults(self, towel_template, pant_template, shirt_template):
+    pass
+    # TODO pass in all the neccesary variables
+    # print resized templates
+    # cv2.imshow('image',towel_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',pant_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',shirt_template)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    # print original templates
+    # pant_ori = np.zeros((19,26))
+    # cv2.fillConvexPoly(pant_ori, pant_cnt, 255)
+    # cv2.imshow('image',pant_ori)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # shirt_ori = np.zeros((21,37))
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[2:5], 255)
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[7:10],255)
+    # cv2.fillConvexPoly(shirt_ori, shirt_cnt, 255)
+    # cv2.imshow('image',shirt_ori)
+
+    # prints difference between template and garment
+    # cv2.imshow('image',(255 * np.not_equal(towel_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',(255 * np.not_equal(pant_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # cv2.imshow('image',(255 * np.not_equal(shirt_template,cloth_bound)).astype(np.uint8))
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
