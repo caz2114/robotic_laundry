@@ -4,7 +4,7 @@ from ImagePreprocessor import ImagePreprocessor
 from math import sqrt
 from GarmentTemplate import initGarmentTemplate
 from Registration import SecantLMMethod, initSolverVars
-from datatypes import SParameters, SSolverVars
+from datatypes import SParameters, SSolverVars, GarmentType
 import sys
 import skfmm
 import cv2
