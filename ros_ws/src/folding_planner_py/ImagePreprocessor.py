@@ -24,14 +24,14 @@ class ImagePreprocessor:
     self.pointList = []
     self.img = None
 
-  def generateGarmentMaskAndType(self, fileName):
+  def generateGarmentMaskAndType(self, fileName, debug):
   # def generateGarmentMask(self, fileName, garmentType):
     crop_img = self.cropRectRoi(fileName)
     thresh, kernel, opening = self.objectSegmenter.preprocess(crop_img)
     markers = self.objectSegmenter.processWatershed(crop_img, kernel, opening)
 
     garmentMask = self.createSquareGarmentMask(markers)
-    garmentType = self.classifyGarment(crop_img, thresh, opening, markers)
+    garmentType = self.classifyGarment(crop_img, thresh, opening, markers,debug)
 
     return garmentMask, garmentType
 
@@ -53,7 +53,7 @@ class ImagePreprocessor:
 
     return garment_mask
 
-  def classifyGarment(self, img, thresh, opening, cnt):
+  def classifyGarment(self, img, thresh, opening, cnt, debug):
     # Getting contour for clothing item
     cloth_cnt = np.zeros(np.shape(img)[:2], np.uint8)
     cloth_cnt[cnt == 1] = 0
@@ -75,9 +75,9 @@ class ImagePreprocessor:
     cloth_bound = thresh[y:(y+h+1),x:(x+w+1)]
 
     #score
-    towel_score = self.towelTemplate(cloth_bound, h, w, True)
-    pant_score = self.pantTemplate(cloth_bound, h, w, True)
-    shirt_score = self.shirtTemplate(cloth_bound, h, w, True)
+    towel_score = self.towelTemplate(cloth_bound, h, w, True,debug)
+    pant_score = self.pantTemplate(cloth_bound, h, w, True,debug)
+    shirt_score = self.shirtTemplate(cloth_bound, h, w, True,debug)
 
     score = np.concatenate((towel_score, pant_score, shirt_score), axis = 0)
     garmentType = ['TOWEL','PANTS','RPANTS','RPANTS','RPANTS','SWEATER','RSWEATER','RSWEATER','RSWEATER']
