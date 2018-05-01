@@ -69,6 +69,9 @@ class ImagePreprocessor:
     hull = cv2.convexHull(cnt,returnPoints = False)
     x,y,w,h = cv2.boundingRect(cnt)
     cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+    cv2.imshow('image',img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
     # Templates for comparision
     # clothing bound box
@@ -173,7 +176,7 @@ class ImagePreprocessor:
       if ptId.vertexIDs[i] >= 0:
         x = ptPos.pos[0, i]
         y = ptPos.pos[1, i]
-        print(x,y)
+#         print(x,y)
 
         #x = x / 2.0f * (float)(maskSize/2)   + (float)this->roi.width/2
         x = (x / 2.0) * (self.maskSize / 2.0) + (self.roi_width / 2.0)
@@ -195,7 +198,7 @@ class ImagePreprocessor:
       x = k.x
       y = k.y
 
-      print(x, y)
+#       print(x, y)
       self.img[y-4:y+4, x-4:x+4] = [0,0,255]
 
     cv2.imwrite('final_img.png', self.img)

@@ -163,7 +163,7 @@ class DepthInterface:
 
         # Convert frame to numpy array
         self.depth_image = np.nan_to_num(np.array(frame))
-        print self.depth_image
+#         print self.depth_image
         # sio.savemat('depth_img.mat', self.depth_image)
 
     def image_callback(self, cam_image):

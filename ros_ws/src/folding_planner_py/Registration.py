@@ -2,6 +2,7 @@ import math
 import numpy as np
 from copy import deepcopy
 from datatypes import SPoint2D
+import sys
 
 # double ComputeAngle(const Eigen::Vector2d& input_one, const Eigen::Vector2d& input_two)
 def ComputeAngle(input_one, input_two):
@@ -410,12 +411,13 @@ def UpdateRestLength(in_position, io_curve):
 # void UpdateCurveSubdivision(const SParameters* in_params, SVar& io_initial_vars, SVar& io_vars, SCurve* io_curve, SSolverVars& io_solver_vars)
 def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_solver_vars):
     nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
-
+    print "HERE1"
     pos = []
     angles = []
     vids = []
 
     subdivided = False
+    print "HERE2"
 
     for i in range(nSegs):
         p = SPoint2D()
@@ -440,7 +442,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
             vids.append(-1)
             subdivided = True
 
-
+    print "HERE3"
     if not io_curve.closed:
         ilast = io_curve.nVertices-1
 
@@ -449,46 +451,47 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
         p.x[1] = io_vars.pos[:,ilast][1]
         pos.append(p)
         vids.append(io_curve.vertexIDs[ilast])
-
+    print "HERE4"
     io_curve.nVertices = len(pos)
 
     nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
-
+    print "HERE5"
     io_curve.restLengths = np.zeros(nSegs)
     nAngles = io_curve.nVertices if io_curve.closed else (io_curve.nVertices-2)
     io_curve.restAngles = np.zeros(nAngles)
     io_curve.vertexIDs = np.arange(io_curve.nVertices)
-
+    print "HERE6"
     io_vars.pos = np.ndarray((2,io_curve.nVertices))
     io_vars.conf = np.zeros(io_curve.nVertices)
     io_initial_vars.pos = np.ndarray((2,io_curve.nVertices))
     io_initial_vars.conf = np.zeros(io_curve.nVertices)
 
     nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
-
+    print "HERE7"
     for i in range(io_curve.nVertices):
         io_vars.pos[:,i][0] = pos[i].x[0]
         io_vars.pos[:,i][1] = pos[i].x[1]
         io_vars.conf[i] = 0.0
         io_curve.vertexIDs[i] = vids[i]
 
-
+    print "HERE8"
     for i in range(nSegs):
         ip = (i+1) % io_curve.nVertices
         diff = io_vars.pos[:,ip] - io_vars.pos[:,i]
         io_curve.restLengths[i] = np.linalg.norm(diff)
-
+    print "HERE9"
     for i in range(nAngles):
         io_curve.restAngles[i] = angles[i]
-
+    print "HERE10"
     io_initial_vars = io_vars
     initSolverVars(in_params, io_curve, io_initial_vars, io_solver_vars, True)
+    print "HERE11"
 
 
 # bool SecantLMMethodSingleUpdate(const SParameters* in_params, const SCurve* in_curve, const SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
 def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
     if io_solver_vars.found or io_solver_vars.k >= in_params.kmax: return True
-
+    print "IN THE SINGLE LOOP"
     io_solver_vars.k += 1
     io_solver_vars.A_muI = np.dot(io_solver_vars.B.T , io_solver_vars.B) + np.dot(io_solver_vars.mu, io_solver_vars.I)
 
@@ -530,6 +533,7 @@ def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_v
         print ("found in {} steps\n".format(io_solver_vars.k))
 
     solution = io_solver_vars.x
+    print io_solver_vars.found or io_solver_vars.k > in_params.kmax
     return io_solver_vars.found or io_solver_vars.k > in_params.kmax
 
 # void ShowFeaturePoints(const SCurve* in_curve, const SVar& solution)
@@ -541,14 +545,15 @@ def ShowFeaturePoints(in_curve, solution):
 
 # void SecantLMMethod(const SParameters* in_params, SCurve* in_curve, SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
 def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
-    ShowFeaturePoints(in_curve, solution)
-
+    ShowFeaturePoints(in_curve, solution)   
     initSolverVars(in_params, in_curve, in_initial_vars, io_solver_vars)
-
+    count = 0
     while(1):
+        print "\n\n\n=============COUNT==============\n\n\n",count
+        count += 1
     	if SecantLMMethodSingleUpdate(in_params, in_curve,        in_initial_vars, io_solver_vars, solution): break
-    	UpdateCurveSubdivision(in_params,        in_initial_vars, solution,        in_curve,       io_solver_vars)
-
+        print io_solver_vars.found or io_solver_vars.k > in_params.kmax
+        UpdateCurveSubdivision(in_params,        in_initial_vars, solution,        in_curve,       io_solver_vars)
     print("found in {} steps".format(io_solver_vars.k))
     solution = io_solver_vars.x
 
@@ -560,7 +565,7 @@ def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solutio
 # void initSolverVars(const SParameters* in_params, const SCurve* in_curve, const SVar& in_initial_vars, SSolverVars& io_vars, bool update)
 def initSolverVars(in_params, in_curve, in_initial_vars, io_vars, update=False):
   if not update:
-    io_vars.k = 0;
+    io_vars.k = 3;
     io_vars.nu = 2.0;
     io_vars.j = 0;
     io_vars.epsilon = 1.0e-7;
@@ -585,15 +590,21 @@ def initSolverVars(in_params, in_curve, in_initial_vars, io_vars, update=False):
     io_vars.h = np.zeros(io_vars.n)
     io_vars.g = np.zeros(io_vars.n)
     io_vars.I = np.identity(io_vars.n)
-
+  print "THERE1"
   ComputeNumericalDerivative(in_params, in_curve, io_vars.x, io_vars.epsilon, io_vars.B)
-
+  print "THERE2"
   Compute_f(in_params, in_curve, io_vars.x, io_vars.f)
-
+  print "THERE3"
   io_vars.g = np.dot(np.transpose(io_vars.B), io_vars.f)
+  print "THERE4"
+  
   io_vars.A_muI = np.dot(np.transpose(io_vars.B), io_vars.B)
-
+  print "THERE5"
+  
   io_vars.mu = in_params.tau * np.amax(np.abs(io_vars.A_muI))
+  print "THERE6"
+  
   io_vars.found = np.amax(np.abs(io_vars.g)) <= in_params.epsilon_1
-
-  print("|g|_inf: {}\n".format(np.amax(np.abs(io_vars.g))))
+  print "THERE7"
+  
+  print("\n\n\n|g|_inf: {}\n\n\n\n".format(np.amax(np.abs(io_vars.g))))

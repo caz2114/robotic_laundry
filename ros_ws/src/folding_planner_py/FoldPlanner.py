@@ -211,13 +211,22 @@ class FoldPlanner:
             garmentType = GarmentType(False, False, True)
 
         df = skfmm.distance(mask)
+        print "skfmm"
         params = self.initParams(df)
+        print "skfmm"
         curve, vars = initGarmentTemplate(garmentType) 
+        print "initgarment"
         initialVars = vars
+        print "setting"
         solverVars = SSolverVars()
-        initSolverVars(params, curve, initialVars, solverVars)
+        print "ssolver"
+#         initSolverVars(params, curve, initialVars, solverVars)
+#         print "initsolver"
         cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
+        print "secant"
+        sys.exit()
         pointList = imagePreprocessor.rescalePoints(curve, vars)
+        print "rescale"
         self.MappingTrajectory(pointList, garmentType)
 
         return FoldPlanner.mapped_traj, garmentTypeStr
