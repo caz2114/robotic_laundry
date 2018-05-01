@@ -65,7 +65,6 @@ class MoveitInterface:
             self.tros = tf.TransformListener()
         else:
             self.tros = t
-
     def move_predef_position(self, limb_name, pos_name, speed=0.3,
                              timeout = 15.0):
         """

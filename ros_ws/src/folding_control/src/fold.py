@@ -76,7 +76,6 @@ def transform_waypoints(pt_list, vision, surface_height):
     for entry in block:
         entry[2] *= ratio
         entry[2] += surface_height
-
     return block
 
 
@@ -157,11 +156,18 @@ def fold_pants(pts, fc, vision, height):
         w[0] += 0.01
         w[1] += 0.05
 
+
+    print "\n\n PERFORM MOVEMENTS \n\n"
     # Perform movements
+    print 1,"\n\n\n"
     fc.pick_place_waypoint('both', (way_points_left_roll, way_points_right_roll))
+    print 2,"\n\n\n"
     fc.open_arms('both')
+    print 3,"\n\n\n"
     fc.pick_place_waypoint('left', way_points_left_fold)
+    print 4,"\n\n\n"
     fc.open_arms('both')
+    print 5,"\n\n\n"
 
 
 def fold_towel(pts, fc, vision, height):
@@ -182,7 +188,7 @@ def main():
     rospy.init_node('baxter_fold')
     tros = tf.TransformListener()
     vision = baxter_vision.DepthInterface(tros)
-
+    
     # RPC module, IP address of the Kinect Windows machine
 #     com = Client('128.59.22.121', sys.argv[1])
     fc = fold_control.FoldControl(height-0.04, tros)
@@ -190,14 +196,14 @@ def main():
     #TODO: call baxter_vision main function in order to generate mapped_keypoints.txt
 
     # Fetch key points from remote machine.
-    rospy.sleep(4)
+#     rospy.sleep(4)
 #     fetch_keypoint(vision, com)
 
     # Parse and transform fetched way point locations
     pts = [line for line in open('mapped_keypoints.txt')]
     pts = parse_waypoints(pts)
-    print "\n\nPOINTS:",pts[0],len(pts),"\n\n"
 
+    print "folding pnats"
     # fold_cloth(pts, fc, vision, height)
     fold_pants(pts, fc, vision, height)
     # fold_towel(pts, fc, vision, height)

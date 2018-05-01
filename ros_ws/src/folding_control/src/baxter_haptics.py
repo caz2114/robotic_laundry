@@ -54,8 +54,8 @@ class HapticsLowLevel:
         sensor_ID = 1 if side == 'left' else 0
         torque_sub = rospy.Subscriber("/robot/limb/" + side + "/gravity_compensation_torques", SEAJointState, self.torque_callback)
         rospy.Subscriber('/robot/analog_io/'+side+'_hand_range/value_uint32', UInt32, self.ir_callback) #subscribe to ir range sensor topic
-        self.gripper = baxter_interface.Gripper(side) #Gripper interface from Baxter API
-        self.gripper.calibrate()
+        self.gripper = baxter_interface.Gripper(side) # Gripper interface from Baxter API
+#         self.gripper.calibrate()
 
 
 class HapticsInterface:
