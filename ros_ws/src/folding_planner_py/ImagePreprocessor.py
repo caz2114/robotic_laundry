@@ -74,9 +74,9 @@ class ImagePreprocessor:
     cloth_bound = thresh[y:(y+h+1),x:(x+w+1)]
 
     #score
-    towel_score = self.towelTemplate(cloth_bound, h, w)
-    pant_score = self.pantTemplate(cloth_bound, h, w)
-    shirt_score = self.shirtTemplate(cloth_bound, h, w)
+    towel_score = self.towelTemplate(cloth_bound, h, w, True)
+    pant_score = self.pantTemplate(cloth_bound, h, w, True)
+    shirt_score = self.shirtTemplate(cloth_bound, h, w, True)
 
     score = np.concatenate((towel_score, pant_score, shirt_score), axis = 0)
     garmentType = ['TOWEL','PANTS','RPANTS','RPANTS','RPANTS','SWEATER','RSWEATER','RSWEATER','RSWEATER']
@@ -86,13 +86,22 @@ class ImagePreprocessor:
     return garmentType[np.argmin(score)]
 
   # returns an single value
-  def towelTemplate(self, cloth_bound, h, w):
+  def towelTemplate(self, cloth_bound, h, w, result):
     towel_template = 255*np.ones((h+1,w+1),np.uint8)
     towel_score = 1.0 * np.sum(np.not_equal(towel_template,cloth_bound))/((h+1)*(w+1))
+
+    if result:
+        cv2.imshow('image',towel_template)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        cv2.imshow('template overlay with garment',(255 * np.not_equal(towel_template,cloth_bound)).astype(np.uint8))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
     return [towel_score]
 
   # returns an array of 4 values with diff percent for different orientation
-  def pantTemplate(self, cloth_bound, h, w):
+  def pantTemplate(self, cloth_bound, h, w, result):
     pant_template = np.zeros((h+1,w+1), np.uint8)
     pant_cnt = np.array([[0,18],[25,16],[25,2],[0,0],[0,7],[14,9],[0,11]])
     pant_resize = np.multiply(pant_cnt, [w/25.0,h/18.0]).astype(int)
@@ -102,12 +111,25 @@ class ImagePreprocessor:
     for i in range(4):
         template = np.rot90(pant_template,i)
         template = cv2.resize(template, dsize=(w+1, h+1), interpolation=cv2.INTER_CUBIC)
-
         pant_score.append(1.0 * np.sum(np.not_equal(template,cloth_bound))/((h+1)*(w+1)))
+
+        if result:
+            cv2.imshow('template',template)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            cv2.imshow('template overlay with garment',(255 * np.not_equal(template,cloth_bound)).astype(np.uint8))
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+    if result:
+        pant_ori = np.zeros((19,26))
+        cv2.fillConvexPoly(pant_ori, pant_cnt, 255)
+        cv2.imshow('orginal template',pant_ori)
+        cv2.waitKey(0)
     return pant_score
 
   # returns an array of 4 values with diff percent for different orientation
-  def shirtTemplate(self, cloth_bound, h, w):
+  def shirtTemplate(self, cloth_bound, h, w, result):
     shirt_template = np.zeros((h+1,w+1), np.uint8)
     shirt_cnt = np.array([[16, 19],[13 ,20],[ 0, 14],\
                         [ 1,  6],[12, 10],[12,  0],\
@@ -118,7 +140,6 @@ class ImagePreprocessor:
     cv2.fillConvexPoly(shirt_template, shirt_resize[2:5], 255)
     cv2.fillConvexPoly(shirt_template, shirt_resize[7:10],255)
     cv2.fillConvexPoly(shirt_template, shirt_resize, 255)
-<<<<<<< HEAD
 
     shirt_score = []
     for i in range(4):
@@ -126,16 +147,23 @@ class ImagePreprocessor:
         template = cv2.resize(template, dsize=(w+1, h+1), interpolation=cv2.INTER_CUBIC)
 
         shirt_score.append(1.0 * np.sum(np.not_equal(template,cloth_bound))/((h+1)*(w+1)))
-    return shirt_score
-=======
-    #score
-    towel_score = 1.0 * np.sum(np.not_equal(towel_template,cloth_bound))/((h+1)*(w+1))
-    pant_score = 1.0 * np.sum(np.not_equal(pant_template,cloth_bound))/((h+1)*(w+1))
-    shirt_score = 1.0 * np.sum(np.not_equal(shirt_template, cloth_bound))/((h+1)*(w+1))
+        if result:
+            cv2.imshow('template',template)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            cv2.imshow('template overlay with garment',(255 * np.not_equal(template,cloth_bound)).astype(np.uint8))
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+    if result:
+        shirt_ori = np.zeros((21,37))
+        cv2.fillConvexPoly(shirt_ori, shirt_cnt[2:5], 255)
+        cv2.fillConvexPoly(shirt_ori, shirt_cnt[7:10],255)
+        cv2.fillConvexPoly(shirt_ori, shirt_cnt, 255)
+        cv2.imshow('image',shirt_ori)
+        cv2.imshow('orginal template',shirt_ori)
+        cv2.waitKey(0)
 
-    score = [towel_score, pant_score, shirt_score]
-    garmentType = ['TOWEL','PANTS','SWEATER']
->>>>>>> ea5383ae27282b4a421183cfff65f49c6fba8a1e
+    return shirt_score
 
 
   def rescalePoints(self, ptId, ptPos):
@@ -174,42 +202,3 @@ class ImagePreprocessor:
     with open('keypoints.txt', 'w') as f:
       for point in self.pointList:
         f.write("{} {} {} \n".format(point.id, point.x, point.y))
-
-
-  def printResults(self, towel_template, pant_template, shirt_template):
-    pass
-    # TODO pass in all the neccesary variables
-    # print resized templates
-    # cv2.imshow('image',towel_template)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # cv2.imshow('image',pant_template)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # cv2.imshow('image',shirt_template)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
-    # print original templates
-    # pant_ori = np.zeros((19,26))
-    # cv2.fillConvexPoly(pant_ori, pant_cnt, 255)
-    # cv2.imshow('image',pant_ori)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # shirt_ori = np.zeros((21,37))
-    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[2:5], 255)
-    # cv2.fillConvexPoly(shirt_ori, shirt_cnt[7:10],255)
-    # cv2.fillConvexPoly(shirt_ori, shirt_cnt, 255)
-    # cv2.imshow('image',shirt_ori)
-
-    # prints difference between template and garment
-    # cv2.imshow('image',(255 * np.not_equal(towel_template,cloth_bound)).astype(np.uint8))
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # cv2.imshow('image',(255 * np.not_equal(pant_template,cloth_bound)).astype(np.uint8))
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # cv2.imshow('image',(255 * np.not_equal(shirt_template,cloth_bound)).astype(np.uint8))
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
