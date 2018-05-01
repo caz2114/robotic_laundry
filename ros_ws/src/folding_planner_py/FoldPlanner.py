@@ -172,10 +172,10 @@ class FoldPlanner:
             pass
 
     def planFold(self, img_file):
-
+        debug = False
         
         imagePreprocessor = ImagePreprocessor()
-        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename)
+        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename, debug)
 
         if garmentTypeStr[0] =='R':
             print "Please rotate the", garmentTypeStr[1:]
