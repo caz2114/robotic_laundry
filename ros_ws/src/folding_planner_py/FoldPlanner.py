@@ -195,16 +195,19 @@ class FoldPlanner:
 
         debug = False
         imagePreprocessor = ImagePreprocessor()
-        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename, debug)
+        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(img_file, debug)
 
         if garmentTypeStr[0] =='R':
             print "Please rotate the", garmentTypeStr[1:]
             sys.exit()
         elif garmentTypeStr == 'SWEATER':
+            print "The garment is", garmentTypeStr
             garmentType = GarmentType(True, False, False)
         elif garmentTypeStr == 'PANTS':
+            print "The garment is", garmentTypeStr
             garmentType = GarmentType(False, True, False)
         elif garmentTypeStr == 'TOWEL':
+            print "The garment is", garmentTypeStr
             garmentType = GarmentType(False, False, True)
 
         df = skfmm.distance(mask)
