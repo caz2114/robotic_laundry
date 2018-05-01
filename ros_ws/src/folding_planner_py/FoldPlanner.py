@@ -2,6 +2,14 @@ import numpy as np
 from ImageUtil import ImageUtil
 from ImagePreprocessor import ImagePreprocessor
 from math import sqrt
+from GarmentTemplate import initGarmentTemplate
+from Registration import SecantLMMethod, initSolverVars
+from datatypes import SParameters, SSolverVars
+import sys
+import skfmm
+import cv2
+import numpy as np
+from collections import namedtuple
 
 class FoldPlanner:
     # WARNING! MAY NOT BE BEST WAY TO INITIALIZE... MAY LEAD TO ERRORS
@@ -134,7 +142,6 @@ class FoldPlanner:
 
     
     def WriteMappedTrajToFile(self):
-        # Write to file.
         with open("mapped_keypoints.txt", "w") as fp: 
             for i in FoldPlanner.mapped_traj:
                 if i[0] == -1.0:
@@ -142,15 +149,29 @@ class FoldPlanner:
                     continue
                 fp.write("{} {} {} \n".format(i[0], i[1], i[2]))
         
-        
-        # printf("xOffset = %f \n", xOffset)
-        # printf("yOffset = %f \n", yOffset)
-        # printf("dist = %f \n", dist)
-        # printf("start pos: %f, %f \n", startPos[0], startPos[1])
-        # printf("end pos: %f, %f \n", endPos[0], endPos[1])
-    
-        #print "The size is {}".format(len(FoldPlanner.mapped_traj))
-        #print "I am after."
         for i in FoldPlanner.mapped_traj:
             pass
-            #print "Mapped trajectory points: {}  {}  {}".format(i[0], i[1], i[2])
+
+    def planFold(self, img_file):
+
+        mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(filename)
+        
+        if garmentTypeStr == 'SWEATER':
+            garmentType = GarmentType(True, False, False)
+        elif garmentTypeStr == 'PANTS':
+            garmentType = GarmentType(False, True, False)
+        elif garmentTypeStr == 'TOWEL':
+            garmentType = GarmentType(False, False, True)
+
+        mask = imagePreprocessor.generateGarmentMask(filename, garmentType)
+        df = skfmm.distance(mask)
+        params = initParams(df)
+        curve, vars = initGarmentTemplate(garmentType) 
+        initialVars = vars
+        solverVars = SSolverVars()
+        initSolverVars(params, curve, initialVars, solverVars)
+        cuve, vars = SecantLMMethod(params, curve, initialVars, solverVars, vars)
+        pointList = imagePreprocessor.rescalePoints(curve, vars)
+        self.MappingTrajectory(pointList, garmentType)
+
+        return FoldPlanner.mapped_traj, garmentTypeStr

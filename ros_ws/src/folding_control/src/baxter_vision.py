@@ -191,6 +191,8 @@ class DepthInterface:
         Return:
         """
         cv2.imwrite(fname, self.img)
+    def get_img(self):
+        return self.img
 
     def find3Dfrom2D(self, _2d_point):
         """
