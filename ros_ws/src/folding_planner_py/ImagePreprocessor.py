@@ -75,9 +75,9 @@ class ImagePreprocessor:
     cloth_bound = thresh[y:(y+h+1),x:(x+w+1)]
 
     #score
-    towel_score = self.towelTemplate(cloth_bound, h, w, True,debug)
-    pant_score = self.pantTemplate(cloth_bound, h, w, True,debug)
-    shirt_score = self.shirtTemplate(cloth_bound, h, w, True,debug)
+    towel_score = self.towelTemplate(cloth_bound, h, w,debug)
+    pant_score = self.pantTemplate(cloth_bound, h, w,debug)
+    shirt_score = self.shirtTemplate(cloth_bound, h, w,debug)
 
     score = np.concatenate((towel_score, pant_score, shirt_score), axis = 0)
     garmentType = ['TOWEL','PANTS','RPANTS','RPANTS','RPANTS','SWEATER','RSWEATER','RSWEATER','RSWEATER']
