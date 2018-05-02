@@ -192,7 +192,8 @@ class FoldPlanner:
             pass
 
     def planFold(self, img_file):
-
+	cv2.imshow('image',img_file)
+	cv2.waitKey(0)
         debug = False
         imagePreprocessor = ImagePreprocessor()
         mask, garmentTypeStr = imagePreprocessor.generateGarmentMaskAndType(img_file, debug)
@@ -222,3 +223,8 @@ class FoldPlanner:
         self.MappingTrajectory(pointList, garmentType)
 
         return FoldPlanner.mapped_traj, garmentTypeStr
+
+
+if __name__ == '__main__':
+    FoldPlanner().planFold(cv2.imread('pants.png'))
+    

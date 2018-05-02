@@ -27,6 +27,8 @@ class ImagePreprocessor:
   def generateGarmentMaskAndType(self, fileName, debug):
   # def generateGarmentMask(self, fileName, garmentType):
     crop_img = self.cropRectRoi(fileName)
+    cv2.imshow('image',crop_img)
+    cv2.waitKey(0)
     thresh, kernel, opening = self.objectSegmenter.preprocess(crop_img)
     markers = self.objectSegmenter.processWatershed(crop_img, kernel, opening)
 

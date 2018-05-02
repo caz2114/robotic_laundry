@@ -6,31 +6,31 @@ import sys
 import numba
 
 # double ComputeAngle(const Eigen::Vector2d& input_one, const Eigen::Vector2d& input_two)
-@numba.jit
+
 def ComputeAngle(input_one, input_two):
     r_sinT = input_one[0]*input_two[1] - input_one[1]*input_two[0]
     r_cosT = -1 * np.sum(np.dot(input_one, input_two))
     return np.arctan2(r_sinT, r_cosT)
 
-@numba.jit
+
 def sgn(x):
     return 1.0 if x >= 0.0 else -1.0
 
 # TODO: might be able to optimize, also check accuracy
-@numba.jit
+
 def ComputeOmegaFromAngle(theta):
 	sinT = math.sin(theta);
 	cosT = math.cos(theta);
 	tan_phi_over_2 = sgn(sinT) * math.sqrt((1.0+cosT)/(max(0.0, 1.0-cosT) + 1.0e-10));
 	return 2.0 * tan_phi_over_2;
 
-@numba.jit
+
 def computeOmega(input_one, input_two):
     return ComputeOmegaFromAngle(ComputeAngle(input_one, input_two))
 
 # double sampleDistanceField(const SImage<double, 1>& in_df, const SRegion& in_region, const Eigen::Vector2d& x)
 # TODO: check math
-@numba.jit
+
 def sampleDistanceField(in_df, in_region, x):
     assert in_df.shape[0] == in_df.shape[1]
     assert in_region.right-in_region.left == in_region.top-in_region.bottom
@@ -61,7 +61,7 @@ def sampleDistanceField(in_df, in_region, x):
     return dist_proj * dist_scale + np.linalg.norm(proj_x - x)
 
 # double integrateDF2OverSegment(const SParameters* in_params, const Eigen::Vector2d& x1, const Eigen::Vector2d& x2, const double rest_length)
-@numba.jit
+
 def integrateDF2OverSegment(in_params, x1, x2, rest_length):
     tot = 0.0
     length = rest_length / in_params.substep_fit
@@ -82,7 +82,7 @@ def integrateDF2OverSegment(in_params, x1, x2, rest_length):
 
 # inline double computeSegmentElasticEnergy(const Eigen::Vector2d& p1, const Eigen::Vector2d& p2, const double& YA, const double& rest_length)
 # ignoring inline
-@numba.jit
+
 def computeSegmentElasticEnergy(p1, p2, YA, rest_length):
     diff = p1 - p2
 
@@ -91,7 +91,7 @@ def computeSegmentElasticEnergy(p1, p2, YA, rest_length):
 # inline double computeSegmentBendingEnergy(const Eigen::Vector2d& pp, const Eigen::Vector2d& pc, const Eigen::Vector2d& pn,
 # 	const double& alpha, const double& rest_length_p, const double& rest_length_n, const double& theta)
 # ignoring inline
-@numba.jit
+
 def computeSegmentBendingEnergy(pp, pc, pn, alpha, rest_length_p, rest_length_n, theta):
     e_im = pc - pp
     e_i = pn - pc
@@ -101,7 +101,7 @@ def computeSegmentBendingEnergy(pp, pc, pn, alpha, rest_length_p, rest_length_n,
 
     return alpha * (omega - omega_bar)**2 / (rest_length_p+rest_length_n)
 
-@numba.jit
+
 def computeEnergy_elastic(in_params, in_curve, in_position):
     nVert = in_curve.nVertices
     nSegs = nVert if in_curve.closed else (nVert -1)
@@ -115,7 +115,7 @@ def computeEnergy_elastic(in_params, in_curve, in_position):
     return energy
 
 # double computeEnergy_bending(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position)
-@numba.jit
+
 def computeEnergy_bending(in_params, in_curve, in_position):
     nVert = in_curve.nVertices
     nAngles = nVert if in_curve.closed else (nVert-2)
@@ -142,7 +142,7 @@ def computeEnergy_bending(in_params, in_curve, in_position):
     return energy
 
 # double computeEnergy_fit(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position)
-@numba.jit
+
 def computeEnergy_fit(in_params, in_curve, in_position):
     nVert = in_curve.nVertices
     nSegs = nVert if in_curve.closed else (nVert -1)
@@ -154,14 +154,14 @@ def computeEnergy_fit(in_params, in_curve, in_position):
 
     return energy
 
-@numba.jit
+
 def ComputeEnergy(in_params, in_curve, in_vars):
     E_elastic = computeEnergy_elastic(in_params, in_curve, in_vars.pos)
     E_bending = computeEnergy_bending(in_params, in_curve, in_vars.pos)
     E_fit = computeEnergy_fit(in_params, in_curve, in_vars.pos)
     return E_elastic + E_bending + E_fit
 
-@numba.jit
+
 def compute_f_elastic(in_params, in_curve, in_position, io_f, offset_row):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
 
@@ -174,7 +174,7 @@ def compute_f_elastic(in_params, in_curve, in_position, io_f, offset_row):
         io_f[i+offset_row] = math.sqrt(0.5 * in_params.YA * in_curve.restLengths[i]) * (np.linalg.norm(diff) / in_curve.restLengths[i] - 1)
 
 # void compute_f_bending(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, Eigen::VectorXd& io_f, int offset_row)
-@numba.jit
+
 def compute_f_bending(in_params, in_curve, in_position, io_f, offset_row):
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
     nVert = in_curve.nVertices
@@ -207,7 +207,7 @@ def compute_f_bending(in_params, in_curve, in_position, io_f, offset_row):
 
 
 # void compute_f_fit(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, Eigen::VectorXd& io_f, int offset_row)
-@numba.jit
+
 def compute_f_fit(in_params, in_curve, in_position, io_f, offset_row):
     nVert = in_curve.nVertices
     nSegs = nVert if in_curve.closed else (nVert -1)
@@ -221,7 +221,7 @@ def compute_f_fit(in_params, in_curve, in_position, io_f, offset_row):
 
 
 # void Compute_f(const SParameters* in_params, const SCurve* in_curve, const SVar& in_vars, Eigen::VectorXd& io_f)
-@numba.jit
+
 def Compute_f(in_params, in_curve, in_vars, io_f):
     nVert = in_curve.nVertices
     nSegs = nVert if in_curve.closed else (nVert -1)
@@ -238,7 +238,7 @@ def Compute_f(in_params, in_curve, in_vars, io_f):
 
 #
 # void computeNumericalDerivative_elastic(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, double epsilon, Eigen::MatrixXd& io_jacobian, int offset_row)
-@numba.jit
+
 def computeNumericalDerivative_elastic(in_params, in_curve, in_position, epsilon, io_jacobian, offset_row):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
 
@@ -285,7 +285,7 @@ def computeNumericalDerivative_elastic(in_params, in_curve, in_position, epsilon
 
 #
 # void computeNumericalDerivative_bending(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, double epsilon, Eigen::MatrixXd& io_jacobian, int offset_row)
-@numba.jit
+
 def computeNumericalDerivative_bending(in_params, in_curve, in_position, epsilon, io_jacobian, offset_row):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
@@ -366,7 +366,7 @@ def computeNumericalDerivative_bending(in_params, in_curve, in_position, epsilon
 
 #
 # void computeNumericalDerivative_fit(const SParameters* in_params, const SCurve* in_curve, const Eigen::Matrix2Xd& in_position, double epsilon, Eigen::MatrixXd& io_jacobian, int offset_row)
-@numba.jit
+
 def computeNumericalDerivative_fit(in_params, in_curve, in_position, epsilon, io_jacobian, offset_row):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
 
@@ -408,7 +408,7 @@ def computeNumericalDerivative_fit(in_params, in_curve, in_position, epsilon, io
         io_jacobian[i+offset_row, ip+in_curve.nVertices] = (fi_ip_dy - fi) / epsilon
 
 # void ComputeNumericalDerivative(const SParameters* in_params, const SCurve* in_curve, const SVar& in_vars, double epsilon, Eigen::MatrixXd& io_jacobian)
-@numba.jit
+
 def ComputeNumericalDerivative(in_params, in_curve, in_vars, epsilon, io_jacobian):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
     nAngles = in_curve.nVertices if in_curve.closed else (in_curve.nVertices-2)
@@ -419,7 +419,7 @@ def ComputeNumericalDerivative(in_params, in_curve, in_vars, epsilon, io_jacobia
 
 
 # void UpdateRestLength(const Eigen::Matrix2Xd& in_position, SCurve* io_curve)
-@numba.jit
+
 def UpdateRestLength(in_position, io_curve):
     nSegs = in_curve.nVertices if in_curve.closed else (in_curve.nVertices -1)
 
@@ -431,7 +431,7 @@ def UpdateRestLength(in_position, io_curve):
         io_curve.restLengths[i] = np.linalg.norm(diff)
 
 # void UpdateCurveSubdivision(const SParameters* in_params, SVar& io_initial_vars, SVar& io_vars, SCurve* io_curve, SSolverVars& io_solver_vars)
-@numba.jit
+
 def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_solver_vars):
     nSegs = io_curve.nVertices if io_curve.closed else (io_curve.nVertices -1)
     pos = []
@@ -501,7 +501,7 @@ def UpdateCurveSubdivision(in_params, io_initial_vars, io_vars, io_curve, io_sol
 
 
 # bool SecantLMMethodSingleUpdate(const SParameters* in_params, const SCurve* in_curve, const SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
-@numba.jit
+
 def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
     if io_solver_vars.found or io_solver_vars.k >= in_params.kmax: return True
     io_solver_vars.k += 1
@@ -548,7 +548,7 @@ def SecantLMMethodSingleUpdate(in_params, in_curve, in_initial_vars, io_solver_v
     return io_solver_vars.found or io_solver_vars.k > in_params.kmax
 
 # void ShowFeaturePoints(const SCurve* in_curve, const SVar& solution)
-@numba.jit
+
 def ShowFeaturePoints(in_curve, solution):
     print("Feature points:")
     for i in range(in_curve.nVertices):
@@ -556,7 +556,7 @@ def ShowFeaturePoints(in_curve, solution):
             print("{}: {}, {}".format(in_curve.vertexIDs[i], solution.pos[0,i], solution.pos[0,i]))
 
 # void SecantLMMethod(const SParameters* in_params, SCurve* in_curve, SVar& in_initial_vars, SSolverVars& io_solver_vars, SVar& solution)
-@numba.jit
+
 def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solution):
     ShowFeaturePoints(in_curve, solution)
     initSolverVars(in_params, in_curve, in_initial_vars, io_solver_vars)
@@ -575,7 +575,7 @@ def SecantLMMethod(in_params, in_curve, in_initial_vars, io_solver_vars, solutio
 
 
 # void initSolverVars(const SParameters* in_params, const SCurve* in_curve, const SVar& in_initial_vars, SSolverVars& io_vars, bool update)
-@numba.jit
+
 def initSolverVars(in_params, in_curve, in_initial_vars, io_vars, update=False):
   if not update:
     io_vars.k = 3;
